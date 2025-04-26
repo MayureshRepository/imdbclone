@@ -1,0 +1,65 @@
+@if(!isLoading){
+<div class="bg-gray-900 text-white inter">
+  <!-- Hero Section -->
+  <section class="bg-cover bg-center h-32 flex items-center justify-center">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-2">Welcome to AMDb</h1>
+      <p class="text-lg">Discover movies, TV shows, and more!</p>
+    </div>
+  </section>
+
+  <!-- Trending Movies Section -->
+  <section class="container mx-auto py-8 px-6">
+    <h2 class="text-2xl font-bold mb-4">Most Search Movies</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+      <!-- Movie Card -->
+      @for(data of trendingMovies; track data; let i = $index) {
+
+      <div
+        class="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:scale-105 hover:cursor-pointer relative"
+        (click)="onSelect(data)"
+      >
+        <img
+          src="{{ data.Poster }}"
+          alt="Movie Poster"
+          class="w-full object-cover"
+        />
+
+   @if(checkIfMovieIsInFavorites(data.imdbID)) {
+    <span (click)="removeFromFavorites(data.imdbID);$event.stopPropagation()">
+      <img
+      src="/favourite.png"
+      alt="Favorite"
+      matTooltip="Remove from Favorites"
+      matTooltipPosition="above"
+      class="absolute top-2 right-2 h-10 w-10 z-10  rounded-full p-1 bg-no-repeat hover:scale-105 transition duration-200"
+    />
+     </span>
+   }@else { 
+     <span (click)="addtofavorite(data.imdbID);$event.stopPropagation()">
+    <img
+    src="/favourites.png"
+    alt="Favorite"
+    matTooltip="Add to Favorites"
+    matTooltipPosition="above"
+    class="absolute top-2 right-2 h-10 w-10 z-10  rounded-full p-1 bg-no-repeat hover:scale-105 transition duration-200"
+  />
+   </span>}
+
+        <div class="p-4">
+            <h3 class="text-lg font-semibold overflow-hidden whitespace-nowrap text-ellipsis" matTooltip="{{data.Title}}">{{ data.Title }}</h3>
+          <p class="text-sm text-gray-400">{{ data.Year }}</p>
+        </div>
+      </div>
+      }
+      <!-- Repeat Movie Cards as needed -->
+    </div>
+  </section>
+
+
+</div>
+} @else {
+<div class="flex justify-center items-center h-screen bg-gray-900">
+  <img src="/loading-gif.gif" alt="loading" class="w-8 h-8" />
+</div>
+}

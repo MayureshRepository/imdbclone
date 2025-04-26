@@ -1,0 +1,29 @@
+<!-- Header with Subtle Blue Background and Close Icon -->
+<div
+  class="flex items-center justify-between px-4 py-3 bg-blue-50 border-b border-blue-200 rounded-t"
+>
+  <h2 class="text-lg font-semibold text-blue-800">Confirmation</h2>
+  <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
+    <mat-icon class="text-blue-800">close</mat-icon>
+  </button>
+</div>
+
+<!-- Message Body -->
+<mat-dialog-content class="px-4 py-6 text-gray-700 text-center">
+  <p class="text-lg">{{ data.message }}</p>
+</mat-dialog-content>
+
+<!-- Footer Buttons -->
+<mat-dialog-actions
+  align="end"
+  class="px-4 py-3 space-x-2 border-t border-gray-200"
+>
+  <button
+    mat-button
+    class="text-gray-600 hover:text-black"
+    (click)="onCancel()"
+  >
+    Cancel
+  </button>
+  <button mat-raised-button color="warn" (click)="onConfirm()">OK</button>
+</mat-dialog-actions>

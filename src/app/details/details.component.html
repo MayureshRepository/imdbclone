@@ -1,0 +1,107 @@
+@if(!isLoading){
+<div class="bg-gray-900 text-white min-h-screen inter">
+  <div class="container mx-auto py-8 px-6">
+    <!-- Back Button -->
+
+    <button
+      class="move-left-on-hover mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
+      onclick="window.history.back()"
+    >
+      <img
+        src="/backimage.png"
+        alt="back"
+        class="inline-block mr-2"
+        width="20"
+        height="20"
+      />
+      Back
+    </button>
+    <div
+      #celebration
+      class="absolute inset-0 celebration-container pointer-events-none z-50"
+    ></div>
+    @if (!this.isSelectedMovieInFavorites) {
+    <button
+      class="relative mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 float-right"
+      (click)="addToFavorites(ids)"
+    >
+      <div class="relative inline-block">
+        <img
+          src="/heart.png"
+          alt="add to favorites icon"
+          class="inline-block mr-2"
+          width="20"
+          height="20"
+        />
+      </div>
+      Add to Favorites
+    </button>
+    } @else {
+    <button
+      class="mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 float-right"
+      (click)="removeFromFavorites(ids)"
+    >
+      <img
+        src="/favourite.png"
+        alt="remove from favorites icon"
+        class="inline-block mr-2"
+        width="20"
+        height="20"
+      />
+      Remove from Favorites
+    </button>
+    }
+
+    <!-- Details Section -->
+    <div
+      class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8"
+    >
+      <!-- Poster -->
+      <img
+        [src]="tvshow.Poster || 'https://via.placeholder.com/300x450'"
+        alt="{{ tvshow.Title }}"
+        class="w-64 h-auto rounded-lg shadow-md"
+      />
+
+      <!-- Info -->
+      <div>
+        <h1 class="text-4xl font-bold mb-4">
+          {{ tvshow.Title || "Title Not Available" }}
+        </h1>
+        <p class="text-gray-400 mb-4">
+          <strong>Release Date:</strong> {{ tvshow.Released || "N/A" }}
+        </p>
+        <p class="text-gray-400 mb-4">
+          <strong>Director :</strong> {{ tvshow.Director || "N/A" }}
+        </p>
+        <p class="text-gray-400 mb-4">
+          <strong>Rating:</strong> {{ tvshow.Rated || "N/A" }}
+        </p>
+        <p class="text-gray-300 mb-4">
+          {{ tvshow.Plot || "Description not available." }}
+        </p>
+
+        <div class="flex flex-wrap">
+          @for(data of tvshow.Ratings; track data; let i = $index) {
+          <div
+            class="mx-4 my-4 p-4 w-60 rounded-2xl border border-white/20 bg-white/10 backdrop-blur-md shadow-md transition-transform duration-200 hover:scale-105"
+          >
+            <p class="text-gray-200 mb-2 text-sm">
+              <strong>{{ data.Source || "N/A" }}</strong>
+            </p>
+            <p class="text-gray-200 text-sm">
+              <strong>Rating : {{ data.Value || "N/A" }}</strong>
+            </p>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+}@else {
+<div class="flex justify-center items-center h-screen bg-gray-900">
+  <img src="/loading-gif.gif" alt="loading" class="w-8 h-8" />
+</div>
+}

@@ -1,0 +1,11 @@
+::ng-deep.my-snackbar {
+    background-color: #2467c6 !important; /* Tailwind gray-800 */
+    z-index: 9999 !important;
+    position: fixed !important;
+    top: 20px !important;
+    right: 20px !important;
+    transform: none !important;
+    margin: 0 !important;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }

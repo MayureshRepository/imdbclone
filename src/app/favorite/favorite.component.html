@@ -1,0 +1,62 @@
+<div class="min-h-screen bg-gray-900 text-white p-6">
+  <div class="flex justify-between items-center mb-6">
+    <button
+      class="move-left-on-hover mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
+      onclick="window.history.back()"
+    >
+      <img
+        src="/backimage.png"
+        alt="back"
+        class="inline-block mr-2"
+        width="20"
+        height="20"
+      />
+      Back
+    </button>
+
+    <h1 class="text-3xl font-bold">Your Favorite Movies</h1>
+    @if(favoriteFromLocalStorage && favoriteFromLocalStorage.length > 0) {
+    <button
+      class="shake-on-hover mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
+      (click)="deleteAll()"
+    >
+      Delete All <i class="fa-solid fa-trash"></i>
+    </button>
+
+    }
+  </div>
+  <div *ngIf="favoriteFromLocalStorage.length > 0; else noFavorites">
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
+    >
+      <div
+        *ngFor="let movie of movieData"
+        class="bg-gray-800 rounded-lg shadow-md overflow-hidden"
+      >
+        <img
+          [src]="
+            movie.Poster || 'https://via.placeholder.com/300x450?text=No+Image'
+          "
+          alt="Poster"
+          class="w-full h-64 object-fill"
+        />
+        <div class="p-4">
+          <h2 class="text-lg font-semibold">{{ movie.Title }}</h2>
+          <p class="text-sm text-gray-400">{{ movie.Year }}</p>
+          <button
+            (click)="removeFromFavorites(movie.imdbID)"
+            class="mt-2 text-red-400 hover:underline text-sm"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noFavorites>
+    <p class="text-center text-gray-400 mt-10">
+      You haven’t added any favorites yet.
+    </p>
+  </ng-template>
+</div>

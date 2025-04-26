@@ -1,0 +1,11 @@
+
+::ng-deep .cdk-overlay-backdrop {
+    backdrop-filter: blur(6px) !important;
+    background-color: rgba(0, 0, 0, 0.3); /* Optional: slightly dark blur */
+  }
+
+  ::ng-deep .mat-dialog-container {
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+  
