@@ -31,6 +31,22 @@ export class DetailsComponent {
       }
     });
 
+    //Here we are adding a Session Storage for Recently added or viewed movies
+    const storedMovies = sessionStorage.getItem('recentlyViewedMovies');
+    const recentlyAddedMovies = storedMovies
+      ? JSON.parse(storedMovies)
+      : [];
+
+    if (!recentlyAddedMovies.includes(this.ids)) {
+      recentlyAddedMovies.push(this.ids);
+      sessionStorage.setItem(
+        'recentlyViewedMovies',
+        JSON.stringify(recentlyAddedMovies)
+      );
+    }
+
+    // Fetch movie details using the ID
+
     this.getDetails(this.ids); // Call the getDetails method with the ID
   }
 

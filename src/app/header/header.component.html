@@ -2,7 +2,7 @@
     <div class="container mx-auto flex items-center justify-between py-4 px-6">
       <!-- Logo -->
       <div class="text-2xl font-bold">
-        <a href="/" class="hover:text-yellow-500">AMDb (A IMDB Clone)</a>
+        <a routerLink="/home" class="hover:text-yellow-500">AMDb (A IMDB Clone)</a>
       </div>
   
 <!-- Search Bar Container -->
@@ -63,13 +63,16 @@
       <!-- Navigation Links -->
       <nav class="inline-flex space-x-6">
       <div class="inline-flex flex-row gap-4" matTooltip="Go to Favorites">
-        <a routerLink="/favorites" class="hover:text-yellow-500 flex items-center gap-2">
+        <a routerLink="/favorites" class="hover:text-yellow-500 flex items-center gap-2 relative">
           <span>Favorites</span>
-          <img src="/favourite.png"
+          <img src="favourite.png"
                alt="Favorite"
                class="relative h-6 w-6 z-10 bg-no-repeat"
           />
-        </a>
+          <span class="absolute -top-2 -right-2 z-50 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+            {{ favoritesCount.length }}
+          </span>
+     </a>
       </div>
       </nav>
     </div>

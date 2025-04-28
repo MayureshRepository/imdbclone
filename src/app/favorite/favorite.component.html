@@ -5,7 +5,7 @@
       onclick="window.history.back()"
     >
       <img
-        src="/backimage.png"
+        src="backimage.png"
         alt="back"
         class="inline-block mr-2"
         width="20"
@@ -27,12 +27,14 @@
   </div>
   <div *ngIf="favoriteFromLocalStorage.length > 0; else noFavorites">
     <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6"
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 "
     >
       <div
         *ngFor="let movie of movieData"
-        class="bg-gray-800 rounded-lg shadow-md overflow-hidden"
-      >
+        class="bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 hover:cursor-pointer"
+        (click)="onSelect(movie)">
+        <div class="hover:bg-gray-700 transition duration-300"></div>
+      
         <img
           [src]="
             movie.Poster || 'https://via.placeholder.com/300x450?text=No+Image'

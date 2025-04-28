@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { GetmoviedataService } from '../service/getmoviedata.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorite',
@@ -15,6 +16,7 @@ export class FavoriteComponent {
   favoriteFromLocalStorage: any[] = []; // Array to hold favorite items from local storage
   movieSearchService = inject(GetmoviedataService);
   movieData: any[] = []; // Variable to hold movie data
+  router = inject(Router);
 
   getFavoriteFromLocalStorage() {
     const favoriteFromLocalStorage1 = localStorage.getItem('favorites');
@@ -36,6 +38,10 @@ export class FavoriteComponent {
     }
   }
 
+  onSelect(id: any) {
+    this.router.navigate(['/details', id.imdbID]); // Navigate to the details page with the selected ID
+  }
+
   //Remove Fvorite
   removeFromFavorites(idtoremove: string) {
     const favoriteFromLocalStorage1 = localStorage.getItem('favorites');
@@ -52,8 +58,6 @@ export class FavoriteComponent {
         break;
       }
     }
-
-    const favoriteFromLocalStorage12 = localStorage.getItem('favorites');
 
     this.getFavoriteFromLocalStorage();
   }
@@ -72,7 +76,9 @@ export class FavoriteComponent {
       .subscribe((result) => {
         if (result) {
           // this.clearAllFavorites(); // Call the method to clear all favorites  localStorage.removeItem('favorites');
-          this.favoriteFromLocalStorage = []; // Clear the array after removing from local storage
+          this.favoriteFromLocalStorage = [];
+          localStorage.removeItem('favorites'); // Remove the favorites from local storage
+          // Clear the array after removing from local storage
           this.movieData = []; // Clear the movieData array as well
         }
       });

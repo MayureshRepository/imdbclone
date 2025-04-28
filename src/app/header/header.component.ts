@@ -1,6 +1,7 @@
-import { Component, HostListener, inject, OnInit } from '@angular/core';
+import { Component, HostListener, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { SearchService } from '../service/search.service';
 import { Router } from '@angular/router';
+import { FavoriteService } from '../service/favorite.service';
 
 @Component({
   selector: 'app-header',
@@ -9,13 +10,21 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   searchText: string = '';
-  constructor(private searchService: SearchService) {}
+  constructor(private searchService: SearchService,private favService:FavoriteService) {}
   router = inject(Router);
   dataFromSearch: any[] = [];
   private debounceTimer: any;
   isDropDownOpen!: boolean; // Flag to track dropdown state
+  favoritesCount:any | '0';
 
-  ngOnInit() {}
+  ngOnInit() {
+  this.favService.favorites$.subscribe((favorites: any[]) => {
+      this.favoritesCount = favorites; // Update the favorites count whenever it changes
+  console.log(this.favoritesCount); // Log the updated count to the console
+    } );
+   
+  }
+
 
   onSearch() {
     this.searchService.getTvShowData(this.searchText).subscribe({
