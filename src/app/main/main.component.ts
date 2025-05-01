@@ -59,14 +59,12 @@ export class MainComponent implements OnInit {
 
   getCachedMovies() {
     const storedMovies = sessionStorage.getItem('recentlyViewedMovies');
-    console.log('Stored Movies:', storedMovies); // Log the stored movies
     const recentlyAddedMovies = storedMovies
       ? JSON.parse(storedMovies)
       : [];
     for (let i = 0; i < recentlyAddedMovies.length; i++) {
       this.getmovieData.getMovieData(recentlyAddedMovies[i]).subscribe({
         next: (data: any) => {
-          console.log('Movie Data:', data); // Log the movie data
           this.cachedMovies.push(data); // Add the movie data to the trendingMovies array
         },
         error: (error: any) => {
@@ -163,6 +161,11 @@ export class MainComponent implements OnInit {
     this.isSelectedMovieInFavorites = this.isMovieAlreadyInFavorites(ids);
   }
 
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '/no-image.jpg';
+  }
+
+  
   checkIfMovieIsInFavorites(ids: string): boolean {
     return this.isMovieAlreadyInFavorites(ids);
   }

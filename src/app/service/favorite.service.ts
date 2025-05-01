@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FavoriteService {
-
-  constructor() { }
+  constructor() {}
 
   private favoritesSubject = new BehaviorSubject<any[]>(this.loadFavorites());
 
@@ -28,12 +27,9 @@ export class FavoriteService {
     return this.favoritesSubject.value;
   }
   removeFavorite(favorite: any) {
-    console.log("Remove fave" ,favorite);
     const favorites = this.loadFavorites();
-    console.log("Remove faves" ,favorites);
+
     const index = favorites.indexOf(favorite);
-    console.log("Remove fave index" ,index);
-    console.log("Remove fave index" ,favorites[index]);
 
     if (index > -1) {
       favorites.splice(index, 1);

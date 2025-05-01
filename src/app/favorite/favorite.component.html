@@ -1,7 +1,7 @@
-<div class="min-h-screen bg-gray-900 text-white p-6">
-  <div class="flex justify-between items-center mb-6">
+<div class="min-h-screen bg-gray-900 text-white p-4 sm:p-6">
+  <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
     <button
-      class="move-left-on-hover mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
+      class="move-left-on-hover mb-4 sm:mb-0 px-3 py-1 sm:px-4 sm:py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 text-sm sm:text-base"
       onclick="window.history.back()"
     >
       <img
@@ -14,40 +14,42 @@
       Back
     </button>
 
-    <h1 class="text-3xl font-bold">Your Favorite Movies</h1>
+    <h1 class="text-xl sm:text-3xl font-bold text-center sm:text-left">
+      Your Favorite Movies
+    </h1>
     @if(favoriteFromLocalStorage && favoriteFromLocalStorage.length > 0) {
     <button
-      class="shake-on-hover mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
+      class="shake-on-hover mt-4 sm:mt-0 px-3 py-1 sm:px-4 sm:py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 text-sm sm:text-base"
       (click)="deleteAll()"
     >
       Delete All <i class="fa-solid fa-trash"></i>
     </button>
-
     }
   </div>
   <div *ngIf="favoriteFromLocalStorage.length > 0; else noFavorites">
     <div
-      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 "
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6"
     >
       <div
         *ngFor="let movie of movieData"
         class="bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 hover:cursor-pointer"
-        (click)="onSelect(movie)">
+        (click)="onSelect(movie)"
+      >
         <div class="hover:bg-gray-700 transition duration-300"></div>
-      
+
         <img
           [src]="
             movie.Poster || 'https://via.placeholder.com/300x450?text=No+Image'
           "
           alt="Poster"
-          class="w-full h-64 object-fill"
+          class="w-full h-64 object-cover"
         />
         <div class="p-4">
-          <h2 class="text-lg font-semibold">{{ movie.Title }}</h2>
-          <p class="text-sm text-gray-400">{{ movie.Year }}</p>
+          <h2 class="text-sm sm:text-lg font-semibold">{{ movie.Title }}</h2>
+          <p class="text-xs sm:text-sm text-gray-400">{{ movie.Year }}</p>
           <button
             (click)="removeFromFavorites(movie.imdbID)"
-            class="mt-2 text-red-400 hover:underline text-sm"
+            class="mt-2 text-red-400 hover:underline text-xs sm:text-sm"
           >
             Remove
           </button>

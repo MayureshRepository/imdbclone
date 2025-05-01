@@ -13,14 +13,13 @@ export class HeaderComponent implements OnInit {
   constructor(private searchService: SearchService,private favService:FavoriteService) {}
   router = inject(Router);
   dataFromSearch: any[] = [];
-  private debounceTimer: any;
+  private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   isDropDownOpen!: boolean; // Flag to track dropdown state
   favoritesCount:any | '0';
-
+  isLoading: boolean = false; // Flag to track loading state
   ngOnInit() {
   this.favService.favorites$.subscribe((favorites: any[]) => {
       this.favoritesCount = favorites; // Update the favorites count whenever it changes
-  console.log(this.favoritesCount); // Log the updated count to the console
     } );
    
   }
@@ -53,13 +52,23 @@ export class HeaderComponent implements OnInit {
   onSearchTextChange(value: string) {
     this.searchText = value; // Update the search text as the user types
 
-    if (this.debounceTimer) {
+    if (this.debounceTimer !== null) {
       clearTimeout(this.debounceTimer); // Clear the previous timer if it exists
     }
 
     this.debounceTimer = setTimeout(() => {
-      this.onSearch(); // Call the search function after a delay we may reduce time
-    }, 3000);
+      this.isDropDownOpen = true;
+      this.isLoading = true; // Set loading state to true
+      this.searchService.getTvShowData(this.searchText).subscribe({
+        next: (data: any) => {
+          this.dataFromSearch = data.Search;
+          this.isLoading = false; // Set loading state to false after data is fetched
+        },
+        error: (error: any) => {
+          console.error('Error fetching data:', error); // Log any errors that occur during the API call
+        },
+      });
+    }, 300); // Reduced delay to 300ms for a more responsive experience
   }
 
   @HostListener('document:click', ['$event'])
@@ -68,6 +77,10 @@ export class HeaderComponent implements OnInit {
     if (!target.closest('.search-container')) {
       this.isDropDownOpen = false;
     }
+  }
+
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '/no-image.jpg';
   }
 
   onSelect(imdbIDformData: any) {

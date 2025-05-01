@@ -22,7 +22,8 @@
           (click)="onSelect(data)"
         >
           <img
-            src="{{ data.Poster }}"
+            [src]=" data.Poster "
+            (error)="onImageError($event)" 
             alt="Movie Poster"
             class="w-full object-cover"
           />

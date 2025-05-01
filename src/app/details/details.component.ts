@@ -113,6 +113,10 @@ export class DetailsComponent {
     return false; // Placeholder return value
   }
 
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = '/no-image.jpg';
+  }
+
   removeFromFavorites(ids: string) {
     const favoriteFromLocalStorage1 = localStorage.getItem('favorites');
     if (favoriteFromLocalStorage1) {
