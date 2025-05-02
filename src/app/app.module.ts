@@ -12,7 +12,6 @@ import { FavoriteComponent } from './favorite/favorite.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import {MatButtonModule, MatIconButton} from '@angular/material/button';
@@ -36,7 +35,6 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MatDialogModule,
     MatSnackBarModule,
     BrowserAnimationsModule,
-    ToastrModule.forRoot(), // ToastrModule added
     MatButtonModule,
     MatIconModule,
     MatIconButton,

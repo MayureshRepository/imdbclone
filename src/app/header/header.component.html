@@ -1,100 +1,99 @@
 <header class="bg-gray-900 text-white shadow-md font-['Inter']">
-  <div class="container mx-auto flex flex-wrap items-center justify-between py-4 px-6">
-
-    <!-- Logo -->
-    <div class="text-2xl font-bold w-full sm:w-auto mb-4 sm:mb-0">
-      <a routerLink="/home" class="hover:text-yellow-500">AMDb (A IMDB Clone)</a>
-    </div>
-
-    <!-- Search + Favorites Container -->
- <!-- Search + Favorites Container -->
-<div class="w-full max-w-xl mx-auto flex flex-row items-center justify-between gap-4">
-  
-  <!-- Relative wrapper for positioning dropdown correctly -->
-  <div class="relative flex-grow">
-    <!-- Search input and button -->
-    <div class="flex items-center space-x-2">
-      <input
-        type="text"
-        [(ngModel)]="searchText"
-        placeholder="Search movies, shows..."
-        (ngModelChange)="onSearchTextChange($event)"
-        class="w-full px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
-      />
-
-      <!-- Search button: only visible on sm and above -->
-      <button
-        class="hidden sm:block px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
-        (click)="onSearch()"
-        aria-label="Search"
-      >
-        Search
-      </button>
-    </div>
-
-    <!-- Dropdown Results: appears directly below input -->
-    <div
-      *ngIf="isDropDownOpen"
-      class="absolute left-0 right-0 top-full mt-2 bg-gray-900 max-h-80 overflow-y-auto border border-gray-700 rounded-lg shadow-lg z-50"
-    >
-      <ng-container *ngIf="isLoading; else searchResults">
-      <div class="flex justify-center items-center h-20 bg-gray-900">
-        <img src="loading-gif.gif" alt="loading" class="w-8 h-8" />
-      </div>
-      </ng-container>
-
-      <ng-template #searchResults>
-      <ng-container *ngIf="(dataFromSearch && dataFromSearch.length > 0 && dataFromSearch!= undefined); else noResults">
-        <div
-        *ngFor="let item of dataFromSearch"
-        class="flex items-start gap-4 p-4 hover:bg-gray-800 cursor-pointer transition duration-200"
-        (click)="onSelect(item)"
-        >
-        <img
-          [src]="item.Poster"
-          alt="Poster"
-          (error)="onImageError($event)" 
-          class="w-16 h-24 object-cover rounded"
-        />
-        <div>
-          <h3 class="text-white font-semibold text-md">{{ item.Title }}</h3>
-          <p class="text-sm text-gray-400">{{ item.Year }}</p>
-        </div>
-        </div>
-        <hr />
-      </ng-container>
-      </ng-template>
-
-      <ng-template #noResults>
-      <div class="p-4 text-gray-500">No results found</div>
-      </ng-template>
-    </div>
-  </div>
-
-  <!-- Favorites beside search input -->
-  <a
-    routerLink="/favorites"
-    class="hover:text-yellow-500 flex items-center gap-2 relative"
-    matTooltip="Go to Favorites"
-    aria-label="Favorites"
+  <div
+    class="container mx-auto flex flex-wrap items-center justify-between py-4 px-6"
   >
-    <span class="hidden sm:inline">Favorites</span>
-    <img
-      src="favourite.png"
-      alt="Favorite"
-      class="relative h-6 w-6 z-10 bg-no-repeat"
-    />
-    <span
-      class="absolute -top-2 -right-2 z-50 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+    <div class="text-2xl font-bold w-full sm:w-auto mb-4 sm:mb-0">
+      <a routerLink="/home" class="hover:text-yellow-500"
+        >AMDb (A IMDB Clone)</a
+      >
+    </div>
+    <div
+      class="w-full max-w-xl mx-auto flex flex-row items-center justify-between gap-4"
     >
-      {{ favoritesCount?.length || 0 }}
-    </span>
-  </a>
-</div>
+      <div class="relative flex-grow">
+        <div class="flex items-center space-x-2">
+          <input
+            type="text"
+            [(ngModel)]="searchText"
+            placeholder="Search movies, shows..."
+            (ngModelChange)="onSearchTextChange($event)"
+            class="w-full px-4 py-2 rounded-md bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          />
 
+          <button
+            class="hidden sm:block px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
+            (click)="onSearch()"
+            aria-label="Search"
+          >
+            Search
+          </button>
+        </div>
 
-    <!-- Dropdown Results -->
-  <!-- Dropdown Results -->
+        <!-- Dropdown Results: appears directly below input -->
+        <div
+          *ngIf="isDropDownOpen"
+          class="absolute left-0 right-0 top-full mt-2 bg-gray-900 max-h-80 overflow-y-auto border border-gray-700 rounded-lg shadow-lg z-50"
+        >
+          <ng-container *ngIf="isLoading; else searchResults">
+            <div class="flex justify-center items-center h-20 bg-gray-900">
+              <img src="loading-gif.gif" alt="loading" class="w-8 h-8" />
+            </div>
+          </ng-container>
 
+          <ng-template #searchResults>
+            <ng-container
+              *ngIf="
+                dataFromSearch &&
+                  dataFromSearch.length > 0 &&
+                  dataFromSearch != undefined;
+                else noResults
+              "
+            >
+              <div
+                *ngFor="let item of dataFromSearch"
+                class="flex items-start gap-4 p-4 hover:bg-gray-800 cursor-pointer transition duration-200"
+                (click)="onSelect(item)"
+              >
+                <img
+                  [src]="item.Poster"
+                  alt="Poster"
+                  (error)="onImageError($event)"
+                  class="w-16 h-24 object-cover rounded"
+                />
+                <div>
+                  <h3 class="text-white font-semibold text-md">
+                    {{ item.Title }}
+                  </h3>
+                  <p class="text-sm text-gray-400">{{ item.Year }}</p>
+                </div>
+              </div>
+              <hr />
+            </ng-container>
+          </ng-template>
+
+          <ng-template #noResults>
+            <div class="p-4 text-gray-500">No results found</div>
+          </ng-template>
+        </div>
+      </div>
+      <a
+        routerLink="/favorites"
+        class="hover:text-yellow-500 flex items-center gap-2 relative md:left-[10vw]"
+        matTooltip="Go to Favorites"
+        aria-label="Favorites"
+      >
+        <span class="hidden sm:inline">Favorites</span>
+        <img
+          src="favourite.png"
+          alt="Favorite"
+          class="relative h-6 w-6 z-10 bg-no-repeat"
+        />
+        <span
+          class="absolute -top-2 -right-2 z-50 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+        >
+          {{ favoritesCount?.length || 0 }}
+        </span>
+      </a>
+    </div>
   </div>
 </header>

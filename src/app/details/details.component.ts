@@ -5,6 +5,7 @@ import { GetmoviedataService } from '../service/getmoviedata.service';
 import { GettvshowdataService } from '../service/gettvshowdata.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FavoriteService } from '../service/favorite.service';
 
 @Component({
   selector: 'app-details',
@@ -16,14 +17,15 @@ export class DetailsComponent {
   ids!: string;
   activatedRoute = inject(ActivatedRoute);
   movieSearchService = inject(GetmoviedataService);
-  isLoading: boolean = false; // Flag to indicate loading state
-  favoriteFromLocalStorage: any[] = []; // Array to hold favorite items from local storage
+  isLoading: boolean = false;
+  favoriteFromLocalStorage: any[] = [];
   dialog = inject(MatDialog);
   readonly snackBar = inject(MatSnackBar);
-  isSelectedMovieInFavorites: boolean = false; // Flag to indicate if the movie is in favorites
+  isSelectedMovieInFavorites: boolean = false;
   @ViewChild('celebration', { static: false })
   celebrationContainer!: ElementRef;
-  constructor() {
+
+  constructor(private favoriteService: FavoriteService) {
     this.activatedRoute.paramMap.subscribe((params) => {
       const idParam = params.get('id');
       if (idParam !== null) {
@@ -31,11 +33,8 @@ export class DetailsComponent {
       }
     });
 
-    //Here we are adding a Session Storage for Recently added or viewed movies
     const storedMovies = sessionStorage.getItem('recentlyViewedMovies');
-    const recentlyAddedMovies = storedMovies
-      ? JSON.parse(storedMovies)
-      : [];
+    const recentlyAddedMovies = storedMovies ? JSON.parse(storedMovies) : [];
 
     if (!recentlyAddedMovies.includes(this.ids)) {
       recentlyAddedMovies.push(this.ids);
@@ -44,36 +43,30 @@ export class DetailsComponent {
         JSON.stringify(recentlyAddedMovies)
       );
     }
-
-    // Fetch movie details using the ID
-
-    this.getDetails(this.ids); // Call the getDetails method with the ID
+    this.getDetails(this.ids);
   }
 
   getDetails(id: string) {
-    this.isLoading = true; // Set loading state to true
+    this.isLoading = true;
     this.movieSearchService.getMovieData(id).subscribe({
       next: (data: any) => {
-        this.tvshow = data; // Assign the received data to the tvshow property
-        this.isSelectedMovieInFavorites = this.isMovieAlreadyInFavorites(id); // Check if the movie is already in favorites
+        this.tvshow = data;
+        this.isSelectedMovieInFavorites = this.isMovieAlreadyInFavorites(id);
       },
       error: (error: any) => {
-        console.error('Error fetching data:', error); // Log any errors that occur during the API call
+        console.error('Error fetching data:', error);
       },
       complete: () => {
-        this.isLoading = false; // Set loading state to false when the request is complete
+        this.isLoading = false;
       },
     });
   }
 
   addToFavorites(ids: any) {
-    // Get current favorites from localStorage or initialize an empty array
     const storedFavorites = localStorage.getItem('favorites');
     this.favoriteFromLocalStorage = storedFavorites
       ? JSON.parse(storedFavorites)
       : [];
-
-    // Check if the item is already in favorites
     const isAlreadyFavorite = this.favoriteFromLocalStorage.includes(ids);
     if (isAlreadyFavorite) {
       this.snackBar.open('Item is already in favorites', 'Close', {
@@ -82,13 +75,17 @@ export class DetailsComponent {
         horizontalPosition: 'end',
         panelClass: ['my-snackbar'],
       });
-
-      return; // Exit if the item is already a favorite
+      return;
     }
-
-    // Avoid duplicates (optional)
+    this.favoriteService.addFavorite(ids.imdbID);
     if (!isAlreadyFavorite) {
       this.favoriteFromLocalStorage.push(ids);
+      this.snackBar.open('Item added to favorites', 'Close', {
+        duration: 3000,
+        verticalPosition: 'top',
+        horizontalPosition: 'end',
+        panelClass: ['my-snackbar'],
+      });
       localStorage.setItem(
         'favorites',
         JSON.stringify(this.favoriteFromLocalStorage)
@@ -99,18 +96,12 @@ export class DetailsComponent {
   }
 
   isMovieAlreadyInFavorites(ids: any): boolean {
-    // Check if the item is already in favorites
     const storedFavorites = localStorage.getItem('favorites');
     this.favoriteFromLocalStorage = storedFavorites
       ? JSON.parse(storedFavorites)
       : [];
 
     return this.favoriteFromLocalStorage.includes(ids);
-  }
-
-  isAddedToFavorites() {
-    // Implement logic to check if the item is already in favorites
-    return false; // Placeholder return value
   }
 
   onImageError(event: Event) {
@@ -124,6 +115,13 @@ export class DetailsComponent {
     }
     for (var i = 0; i < this.favoriteFromLocalStorage.length; i++) {
       if (this.favoriteFromLocalStorage[i] == ids) {
+        this.favoriteService.removeFavorite(ids);
+        this.snackBar.open('Item is removed from  favorites', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'end',
+          panelClass: ['my-snackbar'],
+        });
         this.favoriteFromLocalStorage.splice(i, 1);
         localStorage.setItem(
           'favorites',

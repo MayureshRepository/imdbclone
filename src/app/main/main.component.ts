@@ -14,11 +14,11 @@ import { FavoriteService } from '../service/favorite.service';
   styleUrl: './main.component.css',
 })
 export class MainComponent implements OnInit {
-  trendingMovies: any[] = []; // Array to hold trending movies
-  cachedMovies: any[] = []; // Array to hold cached movies
-  isLoading: boolean = false; // Flag to indicate loading state
+  trendingMovies: any[] = [];
+  cachedMovies: any[] = [];
+  isLoading: boolean = false;
   router = inject(Router);
-  favoriteFromLocalStorage: any[] = []; // Array to hold favorite items from local storage
+  favoriteFromLocalStorage: any[] = [];
   dialog = inject(MatDialog);
   readonly snackBar = inject(MatSnackBar);
   isSelectedMovieInFavorites: boolean = false;
@@ -26,16 +26,16 @@ export class MainComponent implements OnInit {
   constructor(
     private searchService: SearchService,
     private getmovieData: GetmoviedataService,
-    private favoriteService:FavoriteService,
+    private favoriteService: FavoriteService
   ) {}
   ngOnInit(): void {
     this.getlatestMovies();
-    this.getCachedMovies(); // Call the method to get cached movies
+    this.getCachedMovies();
     this.favoriteService.getFavorites();
   }
 
   getlatestMovies() {
-    this.isLoading = true; // Set loading state to true
+    this.isLoading = true;
     this.searchService.getTvShowData('marvel').subscribe({
       next: (data: any) => {
         this.trendingMovies = data.Search;
@@ -43,39 +43,32 @@ export class MainComponent implements OnInit {
         this.isLoading = false;
         this.trendingMovies.forEach((movie: any) => {
           if (this.isMovieAlreadyInFavorites(movie.imdbID)) {
-            movie.isAddedToFav = true; // Set isAddedToFav to true if the movie is already in favorites
+            movie.isAddedToFav = true;
           } else {
             movie.isAddedToFav = false;
           }
         });
       },
       error: (error: any) => {
-        console.error('Error fetching data:', error); // Log any errors that occur during the API call
+        console.error('Error fetching data:', error);
         this.isLoading = false;
       },
     });
   }
 
-
   getCachedMovies() {
     const storedMovies = sessionStorage.getItem('recentlyViewedMovies');
-    const recentlyAddedMovies = storedMovies
-      ? JSON.parse(storedMovies)
-      : [];
+    const recentlyAddedMovies = storedMovies ? JSON.parse(storedMovies) : [];
     for (let i = 0; i < recentlyAddedMovies.length; i++) {
       this.getmovieData.getMovieData(recentlyAddedMovies[i]).subscribe({
         next: (data: any) => {
-          this.cachedMovies.push(data); // Add the movie data to the trendingMovies array
+          this.cachedMovies.push(data);
         },
         error: (error: any) => {
-          console.error('Error fetching data:', error); // Log any errors that occur during the API call
+          console.error('Error fetching data:', error);
         },
       });
     }
-
-
-
-
   }
   onSelect(imdbIDformData: any) {
     this.router.navigate(['/details', imdbIDformData.imdbID]);
@@ -87,8 +80,9 @@ export class MainComponent implements OnInit {
       ? JSON.parse(storedFavorites)
       : [];
 
-    // Check if the item is already in favorites
-    const isAlreadyFavorite = this.favoriteFromLocalStorage.includes(data.imdbID);
+    const isAlreadyFavorite = this.favoriteFromLocalStorage.includes(
+      data.imdbID
+    );
     if (isAlreadyFavorite) {
       this.snackBar.open('Item is already in favorites', 'Close', {
         duration: 3000,
@@ -97,13 +91,9 @@ export class MainComponent implements OnInit {
         panelClass: ['my-snackbar'],
       });
 
-      return; // Exit if the item is already a favorite
+      return;
     }
-
-
     this.favoriteService.addFavorite(data.imdbID);
-
-    // Avoid duplicates (optional)
     if (!isAlreadyFavorite) {
       this.favoriteFromLocalStorage.push(data.imdbID);
       localStorage.setItem(
@@ -121,7 +111,6 @@ export class MainComponent implements OnInit {
   }
 
   isMovieAlreadyInFavorites(ids: any): boolean {
-    // Check if the item is already in favorites
     const storedFavorites = localStorage.getItem('favorites');
     this.favoriteFromLocalStorage = storedFavorites
       ? JSON.parse(storedFavorites)
@@ -138,7 +127,7 @@ export class MainComponent implements OnInit {
 
     for (var i = 0; i < this.favoriteFromLocalStorage.length; i++) {
       if (this.favoriteFromLocalStorage[i] == ids) {
-        this.favoriteService.removeFavorite(ids); // Remove from favorites using the service
+        this.favoriteService.removeFavorite(ids);
 
         this.favoriteFromLocalStorage.splice(i, 1);
         localStorage.setItem(
@@ -149,7 +138,6 @@ export class MainComponent implements OnInit {
       }
     }
 
-  
     this.snackBar.open('Item Removed from favorites', 'Close', {
       duration: 3000,
       verticalPosition: 'top',
@@ -162,10 +150,9 @@ export class MainComponent implements OnInit {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = '/no-image.jpg';
+    (event.target as HTMLImageElement).src = 'no-image.jpg';
   }
 
-  
   checkIfMovieIsInFavorites(ids: string): boolean {
     return this.isMovieAlreadyInFavorites(ids);
   }

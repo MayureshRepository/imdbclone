@@ -1,4 +1,11 @@
-import { Component, HostListener, inject, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  inject,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { SearchService } from '../service/search.service';
 import { Router } from '@angular/router';
 import { FavoriteService } from '../service/favorite.service';
@@ -10,20 +17,21 @@ import { FavoriteService } from '../service/favorite.service';
 })
 export class HeaderComponent implements OnInit {
   searchText: string = '';
-  constructor(private searchService: SearchService,private favService:FavoriteService) {}
+  constructor(
+    private searchService: SearchService,
+    private favService: FavoriteService
+  ) {}
   router = inject(Router);
   dataFromSearch: any[] = [];
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
-  isDropDownOpen!: boolean; // Flag to track dropdown state
-  favoritesCount:any | '0';
-  isLoading: boolean = false; // Flag to track loading state
+  isDropDownOpen!: boolean;
+  favoritesCount: any | '0';
+  isLoading: boolean = false;
   ngOnInit() {
-  this.favService.favorites$.subscribe((favorites: any[]) => {
-      this.favoritesCount = favorites; // Update the favorites count whenever it changes
-    } );
-   
+    this.favService.favorites$.subscribe((favorites: any[]) => {
+      this.favoritesCount = favorites;
+    });
   }
-
 
   onSearch() {
     this.searchService.getTvShowData(this.searchText).subscribe({
@@ -31,44 +39,44 @@ export class HeaderComponent implements OnInit {
         //
         this.dataFromSearch = data.Search;
 
-        this.isDropDownOpen = this.isBoolean(data.Response); // Open dropdown if there are results
+        this.isDropDownOpen = this.isBoolean(data.Response);
       },
       error: (error: any) => {
-        console.error('Error fetching data:', error); // Log any errors that occur during the API call
+        console.error('Error fetching data:', error);
       },
     });
-    this.searchText = ''; // Clear the input field after search
+    this.searchText = '';
   }
 
   isBoolean(value: string): boolean {
     if (value === 'True' || value == 'true') {
-      return true; // Return true if the value is 'true'
+      return true;
     } else if (value == 'false' || value === 'False') {
-      return false; // Return false if the value is 'false'
+      return false;
     }
-    return false; // Default return value if input is neither 'true' nor 'false'
+    return false;
   }
 
   onSearchTextChange(value: string) {
-    this.searchText = value; // Update the search text as the user types
+    this.searchText = value;
 
     if (this.debounceTimer !== null) {
-      clearTimeout(this.debounceTimer); // Clear the previous timer if it exists
+      clearTimeout(this.debounceTimer);
     }
 
     this.debounceTimer = setTimeout(() => {
       this.isDropDownOpen = true;
-      this.isLoading = true; // Set loading state to true
+      this.isLoading = true;
       this.searchService.getTvShowData(this.searchText).subscribe({
         next: (data: any) => {
           this.dataFromSearch = data.Search;
-          this.isLoading = false; // Set loading state to false after data is fetched
+          this.isLoading = false;
         },
         error: (error: any) => {
-          console.error('Error fetching data:', error); // Log any errors that occur during the API call
+          console.error('Error fetching data:', error);
         },
       });
-    }, 300); // Reduced delay to 300ms for a more responsive experience
+    }, 300);
   }
 
   @HostListener('document:click', ['$event'])
@@ -80,7 +88,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = '/no-image.jpg';
+    (event.target as HTMLImageElement).src = './no-image.jpg';
   }
 
   onSelect(imdbIDformData: any) {

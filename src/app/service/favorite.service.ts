@@ -20,7 +20,7 @@ export class FavoriteService {
     const favorites = this.loadFavorites();
     favorites.push(favorite);
     localStorage.setItem('favorites', JSON.stringify(favorites));
-    this.favoritesSubject.next(favorites); // notify all listeners
+    this.favoritesSubject.next(favorites);
   }
 
   getFavorites() {
@@ -28,13 +28,11 @@ export class FavoriteService {
   }
   removeFavorite(favorite: any) {
     const favorites = this.loadFavorites();
-
     const index = favorites.indexOf(favorite);
-
     if (index > -1) {
       favorites.splice(index, 1);
       localStorage.setItem('favorites', JSON.stringify(favorites));
-      this.favoritesSubject.next(favorites); // notify all listeners
+      this.favoritesSubject.next(favorites);
     }
   }
 }

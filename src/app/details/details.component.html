@@ -4,7 +4,7 @@
     <!-- Back Button -->
 
     <button
-      class="move-left-on-hover mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600"
+      class="move-left-on-hover mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 sm:text-sm truncate"
       onclick="window.history.back()"
     >
       <img
@@ -14,7 +14,7 @@
         width="20"
         height="20"
       />
-      Back
+      <span class="truncate hidden sm:inline">Back</span>
     </button>
     <div
       #celebration
@@ -22,7 +22,7 @@
     ></div>
     @if (!this.isSelectedMovieInFavorites) {
     <button
-      class="relative mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 float-right"
+      class="relative mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 float-right sm:text-sm truncate"
       (click)="addToFavorites(ids)"
     >
       <div class="relative inline-block">
@@ -34,11 +34,11 @@
           height="20"
         />
       </div>
-      Add to Favorites
+      <span class="truncate hidden sm:inline"> Add to Favorites</span>
     </button>
     } @else {
     <button
-      class="mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 float-right"
+      class="mb-4 px-4 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 float-right sm:text-sm truncate flex items-center"
       (click)="removeFromFavorites(ids)"
     >
       <img
@@ -48,7 +48,7 @@
         width="20"
         height="20"
       />
-      Remove from Favorites
+      <span class="truncate hidden sm:inline">Remove from Favorites</span>
     </button>
     }
 
@@ -57,8 +57,9 @@
       class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8"
     >
       <!-- Poster -->
-      <img  [src]="tvshow.Poster"
-      (error)="onImageError($event)" 
+      <img
+        [src]="tvshow.Poster"
+        (error)="onImageError($event)"
         alt="{{ tvshow.Title }}"
         class="w-64 h-auto rounded-lg shadow-md"
       />
