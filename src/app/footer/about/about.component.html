@@ -1,0 +1,30 @@
+<div
+    class="flex items-center justify-between px-6 py-4 bg-blue-100 border-b border-blue-300 rounded-t-lg shadow-md"
+>
+    <h2 class="text-xl font-bold text-blue-900">About</h2>
+    <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
+        <mat-icon class="text-blue-900 hover:text-blue-700 transition-colors">close</mat-icon>
+    </button>
+</div>
+
+<!-- Message Body -->
+<mat-dialog-content class="px-6 py-8 text-gray-700 bg-gray-600 text-center leading-relaxed roboto">
+    <p class="text-lg font-medium mb-4">
+        Welcome to AMDB, your go-to destination for exploring movies, TV shows, and the people behind them.
+    </p>
+    <p class="text-base mb-4">
+        Our platform is designed for film enthusiasts who want a clean, fast, and community-driven alternative to traditional movie databases. Whether you're searching for your favorite actor, browsing the top-rated movies, or tracking what to watch next, we've got you covered.
+    </p>
+    <ul class="list-disc list-inside text-left mx-auto max-w-md">
+        <li>Discover detailed information on thousands of movies and shows</li>
+        <li>View cast and crew profiles</li>
+        <li>Rate and review your favorite titles</li>
+        <li>Explore by genre, year, rating, and more</li>
+    </ul>
+    <p class="text-sm text-gray-900 mt-6">
+        Note: This website is a fan-made project created for educational and personal use. It is not affiliated with IMDb or any other official movie database.
+    </p>
+    <p class="text-base font-semibold text-green-300 mt-4">
+        Join us in celebrating cinema—past, present, and future!
+    </p>
+</mat-dialog-content>

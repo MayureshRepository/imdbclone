@@ -1,0 +1,35 @@
+<div
+    class="flex items-center justify-between px-4 py-3 bg-blue-100 border-b border-blue-300 rounded-t shadow-md"
+>
+    <h2 class="text-lg font-semibold text-blue-900">Contact Us</h2>
+    <button mat-icon-button (click)="onCancel()" aria-label="Close dialog" class="hover:bg-blue-200 rounded-full">
+        <mat-icon class="text-blue-900">close</mat-icon>
+    </button>
+</div>
+
+<!-- Contact Form -->
+<mat-dialog-content class="px-6 py-8 bg-gray-700 text-white rounded-b shadow-lg">
+    <p class="mb-4 text-sm">
+        Feel free to reach out to me through the following platforms:
+    </p>
+    <a 
+        href="mailto:mayureshpatrikar24.com" 
+        class="block mb-4 text-blue-300 hover:text-blue-400 underline"
+        matTooltip="Click to send an email"
+        matTooltipPosition="above"
+    >
+        Contact me via Email
+    </a>
+    <div class="linkedin-message">
+        <a 
+            href="https://www.linkedin.com/in/mayureshpatrikar/" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            class="text-blue-300 hover:text-blue-400 underline"
+            matTooltip="Click to connect on LinkedIn"
+            matTooltipPosition="below"
+        >
+            Connect with me on LinkedIn
+        </a>
+    </div>
+</mat-dialog-content>

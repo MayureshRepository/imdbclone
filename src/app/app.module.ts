@@ -17,6 +17,10 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import {MatButtonModule, MatIconButton} from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { FooterComponent } from './footer/footer.component';
+import { AboutComponent } from './footer/about/about.component';
+import { ContactComponent } from './footer/contact/contact.component';
+import { PrivacypolicyComponent } from './footer/privacypolicy/privacypolicy.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,11 @@ import {MatTooltipModule} from '@angular/material/tooltip';
     MainComponent,
     DetailsComponent,
     FavoriteComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    FooterComponent,
+    AboutComponent,
+    ContactComponent,
+    PrivacypolicyComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,58 @@
+<div
+    class="flex items-center justify-between px-4 py-3 bg-blue-50 border-b border-blue-200 rounded-t"
+>
+    <h2 class="text-lg font-semibold text-blue-800">About</h2>
+    <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
+        <mat-icon class="text-blue-800">close</mat-icon>
+    </button>
+</div>
+
+<!-- Message Body -->
+<mat-dialog-content class="px-4 py-6 text-gray-700 bg-slate-500 text-center ">
+    <p class="text-lg"> </p>
+    <p>
+        Welcome to our IMDb clone website. Your privacy is important to us, and this policy explains how we collect, use, and protect your information.
+    </p>
+    <h2 class="text-lg font-semibold text-gray-900">Information We Collect</h2>
+    <p>
+        We may collect personal information such as your name, email address, and any other details you provide when registering or interacting with our website.
+    </p>
+    <h2 class="text-lg font-semibold text-gray-900">How We Use Your Information</h2>
+    <p>
+        Your information is used to improve your experience, provide personalized content, and ensure the functionality of our website.
+    </p>
+    <h2 class="text-lg font-semibold text-gray-900">Data Protection</h2>
+ <br>
+    <h2 class="text-lg font-semibold font-sans">Open Source Software Used</h2>
+    <table class="table-auto border-separate border border-s-emerald-200 w-full text-left mt-4">
+        <thead>
+            <tr>
+                <th class="border border-gray-300 px-4 py-2 ">Software</th>
+                <th class="border border-gray-300 px-4 py-2 ">Version</th>
+                <th class="border border-gray-300 px-4 py-2 ">License</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2">Angular</td>
+                <td class="border border-gray-300 px-4 py-2">18.2.13</td>
+                <td class="border border-gray-300 px-4 py-2">MIT</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2">Tailwind CSS</td>
+                <td class="border border-gray-300 px-4 py-2">3.2.4</td>
+                <td class="border border-gray-300 px-4 py-2">MIT</td>
+            </tr>
+            <tr>
+                <td class="border border-gray-300 px-4 py-2">Material Angular</td>
+                <td class="border border-gray-300 px-4 py-2">18.2.13</td>
+                <td class="border border-gray-300 px-4 py-2">MIT</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2 class="text-lg font-semibold text-gray-900">Contact Us</h2>
+    <p>
+        If you have any questions about this privacy policy, please contact us at 
+        <a href="mailto:support@imdbclone.com" class="text-blue-600 underline">supportimdbclone.com</a>.
+    </p>
+</mat-dialog-content>
