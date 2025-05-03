@@ -150,7 +150,7 @@ export class MainComponent implements OnInit {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = 'no-image.jpg';
+    (event.target as HTMLImageElement).src = '/no-image.jpg';
   }
 
   checkIfMovieIsInFavorites(ids: string): boolean {
