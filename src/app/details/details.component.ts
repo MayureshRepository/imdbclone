@@ -45,7 +45,6 @@ export class DetailsComponent {
     }
     this.getDetails(this.ids);
     window.scrollTo(0, 0);
-  
   }
 
   getDetails(id: string) {
@@ -92,7 +91,6 @@ export class DetailsComponent {
         'favorites',
         JSON.stringify(this.favoriteFromLocalStorage)
       );
-
       this.isSelectedMovieInFavorites = this.isMovieAlreadyInFavorites(ids);
     }
   }
@@ -105,7 +103,6 @@ export class DetailsComponent {
 
     return this.favoriteFromLocalStorage.includes(ids);
   }
-
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = '/no-image.jpg';
   }
