@@ -149,8 +149,15 @@ export class MainComponent implements OnInit {
     this.isSelectedMovieInFavorites = this.isMovieAlreadyInFavorites(ids);
   }
 
-  onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = '/no-image.jpg';
+    onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    // Prevent infinite loop - only handle error once
+    if (!imgElement.hasAttribute('data-error-handled')) {
+      imgElement.setAttribute('data-error-handled', 'true');
+      // Use a data URI instead of external file to avoid 404 errors
+      imgElement.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2216%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo Image%3C/text%3E%3C/svg%3E';
+      imgElement.removeEventListener('error', this.onImageError.bind(this));
+    }
   }
 
   checkIfMovieIsInFavorites(ids: string): boolean {

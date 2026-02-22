@@ -35,4 +35,9 @@ export class FavoriteService {
       this.favoritesSubject.next(favorites);
     }
   }
+
+  removeAllFavorites() {
+    localStorage.removeItem('favorites');
+    this.favoritesSubject.next([]);
+  }
 }
