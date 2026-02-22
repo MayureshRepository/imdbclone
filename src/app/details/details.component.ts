@@ -103,8 +103,13 @@ export class DetailsComponent {
 
     return this.favoriteFromLocalStorage.includes(ids);
   }
-  onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = '/no-image.jpg';
+
+    onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    // Prevent infinite loop by checking if already set to fallback
+    if (imgElement.src !== '/no-image.jpg') {
+      imgElement.src = '/no-image.jpg';
+    }
   }
 
   removeFromFavorites(ids: string) {
