@@ -3,6 +3,7 @@ import { GetmoviedataService } from '../service/getmoviedata.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 import { Router } from '@angular/router';
+import { FavoriteService } from '../service/favorite.service';
 
 @Component({
   selector: 'app-favorite',
@@ -10,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrl: './favorite.component.css',
 })
 export class FavoriteComponent implements OnInit {
+  favriteService= inject(FavoriteService);
   constructor(private dialog: MatDialog) {}
   favoriteFromLocalStorage: any[] = [];
   movieSearchService = inject(GetmoviedataService);
@@ -52,6 +54,7 @@ export class FavoriteComponent implements OnInit {
     for (var i = 0; i < this.favoriteFromLocalStorage.length; i++) {
       if (this.favoriteFromLocalStorage[i] == idtoremove) {
         this.favoriteFromLocalStorage.splice(i, 1);
+         this.favriteService.removeFavorite(idtoremove);
         localStorage.setItem(
           'favorites',
           JSON.stringify(this.favoriteFromLocalStorage)
@@ -59,12 +62,16 @@ export class FavoriteComponent implements OnInit {
         break;
       }
     }
-
     this.getFavoriteFromLocalStorage();
+    
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = '/no-image.jpg';
+    const imgElement = event.target as HTMLImageElement;
+    // Prevent infinite loop by checking if already set to fallback
+    if (imgElement.src !== '/no-image.jpg') {
+      imgElement.src = '/no-image.jpg';
+    }
   }
 
   deleteAll() {

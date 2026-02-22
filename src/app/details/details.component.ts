@@ -44,6 +44,8 @@ export class DetailsComponent {
       );
     }
     this.getDetails(this.ids);
+    window.scrollTo(0, 0);
+  
   }
 
   getDetails(id: string) {
