@@ -1,3 +1,4 @@
+import { handlePosterError } from '../shared/poster-fallback';
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { windowWhen } from 'rxjs';
@@ -49,6 +50,13 @@ export class DetailsComponent {
       this.getDetails(this.ids);
       window.scrollTo(0, 0);
     });
+  }
+
+  get actors(): string[] {
+    const actors = this.tvshow?.Actors;
+    return actors && actors !== 'N/A'
+      ? actors.split(',').map((a: string) => a.trim())
+      : [];
   }
 
   get genres(): string[] {
@@ -118,15 +126,8 @@ export class DetailsComponent {
     return this.favoriteFromLocalStorage.includes(ids);
   }
 
-    onImageError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    // Prevent infinite loop - only handle error once
-    if (!imgElement.hasAttribute('data-error-handled')) {
-      imgElement.setAttribute('data-error-handled', 'true');
-      // Use a data URI instead of external file to avoid 404 errors
-      imgElement.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2216%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo Image%3C/text%3E%3C/svg%3E';
-      imgElement.removeEventListener('error', this.onImageError.bind(this));
-    }
+  onImageError(event: Event) {
+    handlePosterError(event);
   }
 
   removeFromFavorites(ids: string) {

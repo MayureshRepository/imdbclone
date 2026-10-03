@@ -1,12 +1,32 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { handlePosterError } from '../shared/poster-fallback';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SearchService } from '../service/search.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { of } from 'rxjs';
+import { catchError, forkJoin, of } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { GetmoviedataService } from '../service/getmoviedata.service';
 import { FavoriteService } from '../service/favorite.service';
+
+/** Highest-rated titles from the IMDb Top 250 chart. */
+const TOP_RATED_IDS = [
+  'tt0111161', // The Shawshank Redemption
+  'tt0068646', // The Godfather
+  'tt0468569', // The Dark Knight
+  'tt0071562', // The Godfather Part II
+  'tt0050083', // 12 Angry Men
+  'tt0167260', // The Lord of the Rings: The Return of the King
+  'tt0108052', // Schindler's List
+  'tt0110912', // Pulp Fiction
+  'tt0120737', // The Lord of the Rings: The Fellowship of the Ring
+  'tt0060196', // The Good, the Bad and the Ugly
+  'tt0109830', // Forrest Gump
+  'tt0137523', // Fight Club
+];
+const TOP_RATED_CACHE_KEY = 'topRatedMovies';
+const TOP_RATED_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 
 @Component({
   selector: 'app-main',
@@ -18,11 +38,35 @@ export class MainComponent implements OnInit {
   cachedMovies: any[] = [];
   isLoading: boolean = false;
   router = inject(Router);
+  private destroyRef = inject(DestroyRef);
   favoriteFromLocalStorage: any[] = [];
   dialog = inject(MatDialog);
   readonly snackBar = inject(MatSnackBar);
   isSelectedMovieInFavorites: boolean = false;
   skeletons = Array(12);
+  favoritesCount = 0;
+  quickPicks = [
+    { imdbID: 'tt1375666', Title: 'Inception' },
+    { imdbID: 'tt0816692', Title: 'Interstellar' },
+    { imdbID: 'tt0903747', Title: 'Breaking Bad' },
+    { imdbID: 'tt0468569', Title: 'The Dark Knight' },
+    { imdbID: 'tt0386676', Title: 'The Office' },
+    { imdbID: 'tt1160419', Title: 'Dune' },
+  ];
+
+  get featured(): any {
+    return this.trendingMovies?.[0];
+  }
+
+  scrollToTrending() {
+    document.getElementById('trending')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  focusSearch() {
+    const input = document.querySelector<HTMLInputElement>('input[name="search"]');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    input?.focus();
+  }
 
   constructor(
     private searchService: SearchService,
@@ -30,31 +74,73 @@ export class MainComponent implements OnInit {
     private favoriteService: FavoriteService
   ) {}
   ngOnInit(): void {
-    this.getlatestMovies();
+    this.getTopRatedMovies();
     this.getCachedMovies();
-    this.favoriteService.getFavorites();
+    this.favoriteService.favorites$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((favorites: any[]) => {
+        this.favoritesCount = favorites.length;
+      });
   }
 
-  getlatestMovies() {
-    this.isLoading = true;
-    this.searchService.getTvShowData('marvel').subscribe({
-      next: (data: any) => {
-        this.trendingMovies = data.Search;
+  /**
+   * OMDb has no "top rated" endpoint, so we look up a curated list of
+   * IMDb Top 250 titles and sort them by their live IMDb rating. The result
+   * is cached for a day to stay well within the API's daily request limit.
+   */
+  getTopRatedMovies() {
+    const cached = this.readTopRatedCache();
+    if (cached) {
+      this.trendingMovies = cached;
+      return;
+    }
 
+    this.isLoading = true;
+    forkJoin(
+      TOP_RATED_IDS.map((id) =>
+        this.getmovieData.getMovieData(id).pipe(catchError(() => of(null)))
+      )
+    ).subscribe({
+      next: (results: any[]) => {
+        this.trendingMovies = results
+          .filter((movie) => movie && movie.Response !== 'False')
+          .sort((a, b) => parseFloat(b.imdbRating) - parseFloat(a.imdbRating));
+        this.writeTopRatedCache(this.trendingMovies);
         this.isLoading = false;
-        this.trendingMovies.forEach((movie: any) => {
-          if (this.isMovieAlreadyInFavorites(movie.imdbID)) {
-            movie.isAddedToFav = true;
-          } else {
-            movie.isAddedToFav = false;
-          }
-        });
       },
       error: (error: any) => {
         console.error('Error fetching data:', error);
         this.isLoading = false;
       },
     });
+  }
+
+  private readTopRatedCache(): any[] | null {
+    try {
+      const raw = localStorage.getItem(TOP_RATED_CACHE_KEY);
+      if (!raw) {
+        return null;
+      }
+      const { savedAt, movies } = JSON.parse(raw);
+      const fresh = Date.now() - savedAt < TOP_RATED_CACHE_TTL_MS;
+      return fresh && movies?.length ? movies : null;
+    } catch {
+      return null;
+    }
+  }
+
+  private writeTopRatedCache(movies: any[]) {
+    if (!movies.length) {
+      return;
+    }
+    try {
+      localStorage.setItem(
+        TOP_RATED_CACHE_KEY,
+        JSON.stringify({ savedAt: Date.now(), movies })
+      );
+    } catch {
+      // Storage full or unavailable; we'll just refetch next time.
+    }
   }
 
   getCachedMovies() {
@@ -150,15 +236,8 @@ export class MainComponent implements OnInit {
     this.isSelectedMovieInFavorites = this.isMovieAlreadyInFavorites(ids);
   }
 
-    onImageError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    // Prevent infinite loop - only handle error once
-    if (!imgElement.hasAttribute('data-error-handled')) {
-      imgElement.setAttribute('data-error-handled', 'true');
-      // Use a data URI instead of external file to avoid 404 errors
-      imgElement.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22300%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22300%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 font-size=%2216%22 fill=%22%23999%22 text-anchor=%22middle%22 dy=%22.3em%22%3ENo Image%3C/text%3E%3C/svg%3E';
-      imgElement.removeEventListener('error', this.onImageError.bind(this));
-    }
+  onImageError(event: Event) {
+    handlePosterError(event);
   }
 
   checkIfMovieIsInFavorites(ids: string): boolean {

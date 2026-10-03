@@ -39,17 +39,27 @@ module.exports = {
           500: "#f5c518",
           600: "#d9a90b",
         },
+        accent: {
+          400: themed("accent-400"),
+          500: "#6d5efc",
+          600: "#5847f5",
+        },
         // Fixed colors for text on brand / colored surfaces (never flip).
         onbrand: "#07080c",
         snow: "#ffffff",
       },
       boxShadow: {
         glow: "0 0 0 1px rgba(245,197,24,.35), 0 10px 40px -10px rgba(245,197,24,.35)",
+        "glow-accent": "0 0 0 1px rgba(109,94,252,.4), 0 12px 40px -12px rgba(109,94,252,.55)",
         card: "0 10px 30px -12px rgb(var(--c-shadow) / .7)",
       },
       keyframes: {
         shimmer: {
           "100%": { transform: "translateX(100%)" },
+        },
+        "gradient-pan": {
+          "0%, 100%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
         },
         "fade-up": {
           "0%": { opacity: "0", transform: "translateY(12px)" },
@@ -58,6 +68,7 @@ module.exports = {
       },
       animation: {
         shimmer: "shimmer 1.6s infinite",
+        "gradient-pan": "gradient-pan 8s ease infinite",
         "fade-up": "fade-up .5s ease-out both",
       },
     },

@@ -21,6 +21,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './footer/about/about.component';
 import { ContactComponent } from './footer/contact/contact.component';
 import { PrivacypolicyComponent } from './footer/privacypolicy/privacypolicy.component';
+import { SpotlightDirective } from './shared/spotlight.directive';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { PrivacypolicyComponent } from './footer/privacypolicy/privacypolicy.com
     FooterComponent,
     AboutComponent,
     ContactComponent,
-    PrivacypolicyComponent
+    PrivacypolicyComponent,
+    SpotlightDirective
   ],
   imports: [
     BrowserModule,

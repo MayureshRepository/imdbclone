@@ -9,7 +9,7 @@ AMDb is a fast, responsive movie & TV show explorer built with **Angular 18**, *
 - **Title details**: poster backdrop, genre chips, IMDb score, cast, awards, and ratings from IMDb / Rotten Tomatoes / Metacritic.
 - **Favorites**: add or remove with one tap. They're saved to `localStorage`, and the count shows live in the header.
 - **Dark / light mode**: dark by default, with a sun/moon toggle in the header. Your choice is saved in `localStorage` and applied before first paint, so the page never flashes the wrong theme.
-- **Modern UI**: glassmorphism header, gradient hero, animated poster cards, and a responsive grid from phone to desktop.
+- **Premium UI**: Bento-grid home and details pages, soft glassmorphism tiles with a cursor-following spotlight, animated gradient headlines, and a deep slate, electric indigo and IMDb gold palette. Fully responsive from phone to desktop.
 - **Dialogs**: About, Contact, Privacy Policy, and a confirmation prompt before clearing favorites.
 
 ## Tech stack
@@ -148,6 +148,8 @@ Reusable classes are defined in `src/styles.css` under `@layer components`:
 - `page`: centered, responsive content container
 - `btn-primary`, `btn-ghost`, `btn-danger`: button variants
 - `poster-card`, `poster-grid`, `fav-toggle`: movie card building blocks
+- `bento`, `bento-tile`, `bento-tile-link`: Bento grid and glass tiles (add `appSpotlight` for the cursor glow)
+- `glass`, `text-gradient`, `btn-accent`, `eyebrow`, `icon-badge`: surfaces, headline gradient and accents
 - `chip`, `section-title`, `skeleton`: small UI primitives
 
 Colors are defined in `tailwind.config.js` (`ink-*` for surfaces, `brand-*` for the IMDb-style yellow). The theme-aware tokens (`ink-*`, `zinc-*`, `white`, `brand-300/400`) read CSS variables declared in `src/styles.css`: `:root` holds the dark palette (the default) and `html.light` overrides it. `ThemeService` (`src/app/service/theme.service.ts`) toggles the `light` class. Use `onbrand` or `snow` for text that must stay the same color in both themes, such as text on yellow or red buttons.

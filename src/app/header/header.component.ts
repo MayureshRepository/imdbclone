@@ -1,3 +1,4 @@
+import { handlePosterError } from '../shared/poster-fallback';
 import {
   Component,
   HostListener,
@@ -100,7 +101,7 @@ export class HeaderComponent implements OnInit {
   }
 
   onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = './no-image.jpg';
+    handlePosterError(event);
   }
 
   onSelect(imdbIDformData: any) {
