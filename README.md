@@ -73,6 +73,47 @@ npx http-server dist/imdbclone/browser -p 8080 -c-1
 | `npm run watch`  | Development build that rebuilds on file changes         |
 | `npm test`       | Run unit tests with Karma (opens Chrome)                |
 
+## Deploy to GitHub Pages
+
+The live site is at **https://mayureshrepository.github.io/imdbclone/**.
+
+GitHub Pages serves the pre-built files on the **`gh-pages`** branch and doesn't build anything itself. You build locally, then push the output to that branch.
+
+**One-time setup** (already done for this repo): under **Settings → Pages**, set **Source** to *Deploy from a branch*, **Branch** to `gh-pages`, and the folder to `/ (root)`.
+
+### Steps
+
+```bash
+# 1. Commit and push source changes to master
+#    (this alone does NOT update the live site)
+git add -A
+git commit -m "Describe your change"
+git push origin master
+
+# 2. Production build, using the sub-path the site is served from
+npx ng build --base-href /imdbclone/
+
+# 3. Copy index.html to 404.html so deep links (e.g. /imdbclone/details/tt0848228) work
+cp dist/imdbclone/browser/index.html dist/imdbclone/browser/404.html
+
+# 4. Publish the build output to the gh-pages branch
+npx angular-cli-ghpages --dir=dist/imdbclone/browser
+```
+
+On **Windows PowerShell**, use this for step 3:
+
+```powershell
+Copy-Item dist/imdbclone/browser/index.html dist/imdbclone/browser/404.html
+```
+
+GitHub redeploys automatically within 1–2 minutes. Track it in the repo's **Actions** tab under *pages build and deployment*, then open the site. If you still see the old version, hard-refresh with `Ctrl+Shift+R`.
+
+### Notes
+
+- **Keep `--base-href /imdbclone/`.** Without it the deployed page is blank: the site lives under `/imdbclone/`, so scripts and styles fail to load from the domain root.
+- **Why `404.html`?** GitHub Pages has no SPA fallback. Serving a copy of `index.html` as the 404 page lets Angular's router handle routes like `/favorites` on refresh.
+- **Authentication:** `angular-cli-ghpages` pushes with your local git credentials, the same ones `git push` uses.
+
 ## OMDb API key
 
 The services in `src/app/service/` call `https://www.omdbapi.com/` with an API key embedded in the URL. The free tier allows **1,000 requests/day**. If you hit the limit or want your own key:
