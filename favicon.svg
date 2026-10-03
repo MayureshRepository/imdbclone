@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffe066"/>
+      <stop offset="0.55" stop-color="#f5c518"/>
+      <stop offset="1" stop-color="#e3a400"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.4"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Gold tile -->
+  <rect width="64" height="64" rx="15" fill="url(#tile)"/>
+  <rect width="64" height="64" rx="15" fill="url(#shine)"/>
+
+  <!-- Bold geometric "A" -->
+  <path fill="#0b0d1a" fill-rule="evenodd"
+        d="M27 12h10l15 40h-9.6l-2.7-7.6H24.3L21.6 52H12L27 12Zm5 10.2-5 14.3h10L32 22.2Z"/>
+
+  <!-- Indigo sparkle -->
+  <path fill="#6d5efc"
+        d="M50 7.5c.6 3.4 1.9 4.7 5.3 5.3-3.4.6-4.7 1.9-5.3 5.3-.6-3.4-1.9-4.7-5.3-5.3 3.4-.6 4.7-1.9 5.3-5.3Z"/>
+</svg>
