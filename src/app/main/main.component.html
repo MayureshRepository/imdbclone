@@ -1,130 +1,124 @@
-@if(!isLoading){
-<div class="bg-gray-900 text-white inter">
-  <!-- Hero Section -->
-  <section class="bg-cover bg-center h-32 flex items-center justify-center">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold mb-2">Welcome to AMDb</h1>
-      <p class="text-lg">Discover movies, TV shows, and more!</p>
-    </div>
-  </section>
+<!-- Hero -->
+<section class="relative isolate overflow-hidden border-b border-white/5">
+  <div
+    class="absolute inset-0 -z-10 bg-[radial-gradient(60%_80%_at_20%_0%,rgba(245,197,24,.18),transparent_60%),radial-gradient(50%_70%_at_90%_20%,rgba(244,63,94,.12),transparent_60%)]"
+  ></div>
+  <div
+    class="absolute inset-0 -z-10 opacity-[.07] [background-image:linear-gradient(rgb(var(--c-fg)_/_.6)_1px,transparent_1px),linear-gradient(90deg,rgb(var(--c-fg)_/_.6)_1px,transparent_1px)] [background-size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
+  ></div>
 
-  @if(cachedMovies && cachedMovies.length > 0){
-  <section class="container mx-auto py-8 px-6">
-    <h2 class="text-2xl font-bold mb-4">Recent Search Movies</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-      <!-- Movie Card -->
-      @for(data of cachedMovies; track data; let i = $index) {
-
-      <div
-        class="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:scale-105 hover:cursor-pointer relative"
-        (click)="onSelect(data)"
+  <div class="page py-14 sm:py-20">
+    <span class="chip mb-5 border-brand-500/30 bg-brand-500/10 text-brand-300">
+      <span class="material-icons-round text-[14px]">auto_awesome</span>
+      Powered by the OMDb API
+    </span>
+    <h1
+      class="max-w-3xl font-display text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl"
+    >
+      Discover your next
+      <span class="bg-gradient-to-r from-brand-400 via-amber-300 to-rose-400 bg-clip-text text-transparent"
+        >favorite story.</span
       >
-        <img
-          [src]="data.Poster"
-          (error)="onImageError($event)"
-          alt="Movie Poster"
-          class="w-full object-cover"
-        />
+    </h1>
+    <p class="mt-4 max-w-xl text-base text-zinc-400 sm:text-lg">
+      Search millions of movies and TV shows, dive into ratings and plots, and keep a personal watchlist of
+      favorites.
+    </p>
+  </div>
+</section>
 
-        @if(checkIfMovieIsInFavorites(data.imdbID)) {
-        <span
-          (click)="removeFromFavorites(data.imdbID); $event.stopPropagation()"
-        >
-          <img
-            src="favourite.png"
-            alt="Favorite"
-            matTooltip="Remove from Favorites"
-            matTooltipPosition="above"
-            class="absolute top-2 right-2 h-10 w-10 z-10 rounded-full p-1 bg-no-repeat hover:scale-105 transition duration-200"
-          />
-        </span>
-        }@else {
-        <span (click)="addtofavorite(data); $event.stopPropagation()">
-          <img
-            src="favourites.png"
-            alt="Favorite"
-            matTooltip="Add to Favorites"
-            matTooltipPosition="above"
-            class="absolute top-2 right-2 h-10 w-10 z-10 rounded-full p-1 bg-no-repeat hover:scale-105 transition duration-200"
-          /> </span
-        >}
-
-        <div class="p-4">
-          <h3
-            class="text-lg font-semibold overflow-hidden whitespace-nowrap text-ellipsis"
-            matTooltip="{{ data.Title }}"
-          >
-            {{ data.Title }}
-          </h3>
-          <p class="text-sm text-gray-400">{{ data.Year }}</p>
-        </div>
-      </div>
+<div class="page space-y-14 py-10 sm:py-14">
+  <!-- Recently viewed -->
+  @if (cachedMovies && cachedMovies.length > 0) {
+  <section>
+    <div class="mb-5 flex items-end justify-between">
+      <h2 class="section-title">Recently Viewed</h2>
+      <span class="text-xs text-zinc-500">{{ cachedMovies.length }} titles</span>
+    </div>
+    <div class="poster-grid">
+      @for (data of cachedMovies; track data.imdbID) {
+      <ng-container *ngTemplateOutlet="posterCard; context: { $implicit: data }"></ng-container>
       }
-      <!-- Repeat Movie Cards as needed -->
     </div>
   </section>
   }
 
-  <br />
+  <!-- Trending -->
+  <section>
+    <div class="mb-5 flex items-end justify-between">
+      <h2 class="section-title">Most Searched</h2>
+    </div>
 
-  <!-- Trending Movies Section -->
-  <section class="container mx-auto py-8 px-6">
-    <h2 class="text-2xl font-bold mb-4">Most Search Movies</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-      <!-- Movie Card -->
-      @for(data of trendingMovies; track data; let i = $index) {
-
-      <div
-        class="bg-gray-800 rounded-lg overflow-hidden shadow-md hover:scale-105 hover:cursor-pointer relative"
-        (click)="onSelect(data)"
-      >
-        <img
-          src="{{ data.Poster }}"
-          (error)="onImageError($event)"
-          alt="Movie Poster"
-          class="w-full object-cover"
-        />
-
-        @if(checkIfMovieIsInFavorites(data.imdbID)) {
-        <span
-          (click)="removeFromFavorites(data.imdbID); $event.stopPropagation()"
-        >
-          <img
-            src="favourite.png"
-            alt="Favorite"
-            matTooltip="Remove from Favorites"
-            matTooltipPosition="above"
-            class="absolute top-2 right-2 h-10 w-10 z-10 rounded-full p-1 bg-no-repeat hover:scale-105 transition duration-200"
-          />
-        </span>
-        }@else {
-        <span (click)="addtofavorite(data); $event.stopPropagation()">
-          <img
-            src="favourites.png"
-            alt="Favorite"
-            matTooltip="Add to Favorites"
-            matTooltipPosition="above"
-            class="absolute top-2 right-2 h-10 w-10 z-10 rounded-full p-1 bg-no-repeat hover:scale-105 transition duration-200"
-          /> </span
-        >}
-
-        <div class="p-4">
-          <h3
-            class="text-lg font-semibold overflow-hidden whitespace-nowrap text-ellipsis"
-            matTooltip="{{ data.Title }}"
-          >
-            {{ data.Title }}
-          </h3>
-          <p class="text-sm text-gray-400">{{ data.Year }}</p>
-        </div>
+    @if (isLoading) {
+    <div class="poster-grid">
+      @for (s of skeletons; track $index) {
+      <div>
+        <div class="skeleton aspect-[2/3]"></div>
+        <div class="skeleton mt-3 h-3 w-3/4 rounded"></div>
+        <div class="skeleton mt-2 h-3 w-1/3 rounded"></div>
       </div>
       }
-      <!-- Repeat Movie Cards as needed -->
     </div>
+    } @else if (trendingMovies && trendingMovies.length > 0) {
+    <div class="poster-grid">
+      @for (data of trendingMovies; track data.imdbID) {
+      <ng-container *ngTemplateOutlet="posterCard; context: { $implicit: data }"></ng-container>
+      }
+    </div>
+    } @else {
+    <div class="rounded-2xl border border-dashed border-white/10 p-10 text-center text-zinc-500">
+      Couldn't load titles right now. Please try again later.
+    </div>
+    }
   </section>
 </div>
-} @else {
-<div class="flex justify-center items-center h-screen bg-gray-900">
-  <img src="loading-gif.gif" alt="loading" class="w-8 h-8" />
-</div>
-}
+
+<!-- Reusable poster card -->
+<ng-template #posterCard let-data>
+  <article class="poster-card group" (click)="onSelect(data)">
+    <img
+      class="poster"
+      [src]="data.Poster"
+      (error)="onImageError($event)"
+      [alt]="data.Title + ' poster'"
+      loading="lazy"
+    />
+    <div class="overlay"></div>
+
+    @if (checkIfMovieIsInFavorites(data.imdbID)) {
+    <button
+      type="button"
+      class="fav-toggle active"
+      matTooltip="Remove from Favorites"
+      matTooltipPosition="above"
+      aria-label="Remove from favorites"
+      (click)="removeFromFavorites(data.imdbID); $event.stopPropagation()"
+    >
+      <span class="material-icons-round">favorite</span>
+    </button>
+    } @else {
+    <button
+      type="button"
+      class="fav-toggle"
+      matTooltip="Add to Favorites"
+      matTooltipPosition="above"
+      aria-label="Add to favorites"
+      (click)="addtofavorite(data); $event.stopPropagation()"
+    >
+      <span class="material-icons-round">favorite_border</span>
+    </button>
+    }
+
+    <div class="meta">
+      <h3 class="truncate text-sm font-semibold text-white" [matTooltip]="data.Title">{{ data.Title }}</h3>
+      <div class="mt-1 flex items-center gap-2 text-xs text-zinc-400">
+        <span>{{ data.Year }}</span>
+        @if (data.imdbRating && data.imdbRating !== 'N/A') {
+        <span class="flex items-center gap-0.5 text-brand-400">
+          <span class="material-icons-round text-[14px]">star</span>{{ data.imdbRating }}
+        </span>
+        }
+      </div>
+    </div>
+  </article>
+</ng-template>

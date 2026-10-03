@@ -1,67 +1,79 @@
-<div class="min-h-screen bg-gray-900 text-white p-4 sm:p-6">
-  <div
-    class="flex flex-row sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0 mb-6 text-center sm:text-left"
-  >
-    <!-- Back Button -->
-    <button
-      class="flex items-center justify-center self-start sm:self-auto px-3 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 text-sm sm:text-sm truncate"
-      onclick="window.history.back()"
-    >
-      <img src="backimage.png" alt="back" class="mr-2" width="20" height="20" />
-      <span class="truncate hidden sm:inline">Back</span>
-    </button>
+<div class="page py-8 sm:py-12">
+  <!-- Toolbar -->
+  <div class="mb-8 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <button type="button" class="btn-ghost group h-10 w-10 !p-0" onclick="window.history.back()" aria-label="Go back">
+        <span class="material-icons-round text-[18px] transition group-hover:-translate-x-0.5">arrow_back</span>
+      </button>
+      <div>
+        <h1 class="font-display text-2xl font-extrabold tracking-tight sm:text-3xl">Your Favorites</h1>
+        <p class="text-sm text-zinc-500">
+          {{ movieData.length }} {{ movieData.length === 1 ? 'title' : 'titles' }} saved
+        </p>
+      </div>
+    </div>
 
-    <!-- Heading -->
-    <h1 class="text-lg sm:text-3xl font-bold">Your Favorite Movies</h1>
-
-    <!-- Delete All Button -->
-    @if(favoriteFromLocalStorage && favoriteFromLocalStorage.length > 0) {
-    <button
-      class="flex items-center justify-center self-end sm:self-auto px-3 py-2 bg-yellow-500 text-gray-900 rounded-md hover:bg-yellow-600 text-sm sm:text-base truncate"
-      (click)="deleteAll()"
-    >
-      <span class="truncate hidden sm:inline"> Delete All </span>
-      <i class="fa-solid fa-trash ml-2"></i>
+    @if (movieData.length > 0) {
+    <button type="button" class="btn-danger shake-on-hover" (click)="deleteAll()">
+      <i class="fa-solid fa-trash"></i>
+      <span>Clear all</span>
     </button>
     }
   </div>
 
-  <div *ngIf="favoriteFromLocalStorage.length > 0; else noFavorites">
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6"
-    >
-      <div
-        *ngFor="let movie of movieData"
-        class="bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform transform hover:scale-105 hover:cursor-pointer"
-        (click)="onSelect(movie)"
-      >
-        <div class="hover:bg-gray-700 transition duration-300"></div>
+  @if (movieData.length > 0) {
+  <div class="poster-grid">
+    @for (movie of movieData; track movie.imdbID) {
+    <article class="poster-card group" (click)="onSelect(movie)">
+      <img
+        class="poster"
+        [src]="movie.Poster"
+        (error)="onImageError($event)"
+        [alt]="movie.Title + ' poster'"
+        loading="lazy"
+      />
+      <div class="overlay"></div>
 
-        <img
-          [src]="movie.Poster"
-          (error)="onImageError($event)"
-          alt="Poster"
-          class="w-full h-64 object-fill"
-        />
-        <div class="p-4">
-          <h2 class="text-sm sm:text-lg font-semibold">{{ movie.Title }}</h2>
-          <p class="text-xs sm:text-sm text-gray-400">{{ movie.Year }}</p>
-          <button
-            (click)="
-              removeFromFavorites(movie.imdbID); $event.stopPropagation()
-            "
-            class="mt-2 text-red-400 hover:underline text-xs sm:text-sm"
-          >
-            Remove
-          </button>
+      <button
+        type="button"
+        class="fav-toggle active"
+        matTooltip="Remove from Favorites"
+        matTooltipPosition="above"
+        aria-label="Remove from favorites"
+        (click)="removeFromFavorites(movie.imdbID); $event.stopPropagation()"
+      >
+        <span class="material-icons-round">favorite</span>
+      </button>
+
+      <div class="meta">
+        <h2 class="truncate text-sm font-semibold text-white">{{ movie.Title }}</h2>
+        <div class="mt-1 flex items-center gap-2 text-xs text-zinc-400">
+          <span>{{ movie.Year }}</span>
+          @if (movie.imdbRating && movie.imdbRating !== 'N/A') {
+          <span class="flex items-center gap-0.5 text-brand-400">
+            <span class="material-icons-round text-[14px]">star</span>{{ movie.imdbRating }}
+          </span>
+          }
         </div>
       </div>
-    </div>
+    </article>
+    }
   </div>
-
-  <ng-template #noFavorites>
-    <p class="text-center text-gray-400 mt-10">
-      You haven’t added any favorites yet.
+  } @else {
+  <div
+    class="mx-auto flex max-w-md flex-col items-center rounded-3xl border border-dashed border-white/10 bg-white/[.02] px-6 py-16 text-center"
+  >
+    <div class="mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-rose-500/10 ring-1 ring-rose-500/20">
+      <span class="material-icons-round text-3xl text-rose-500">favorite_border</span>
+    </div>
+    <h2 class="font-display text-xl font-bold">No favorites yet</h2>
+    <p class="mt-2 text-sm text-zinc-400">
+      Tap the heart on any movie or show to save it here for later.
     </p>
-  </ng-template>
+    <a routerLink="/home" class="btn-primary mt-6">
+      <span class="material-icons-round text-[18px]">explore</span>
+      Browse titles
+    </a>
+  </div>
+  }
 </div>

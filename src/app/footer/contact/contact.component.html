@@ -1,35 +1,46 @@
-<div
-    class="flex items-center justify-between px-4 py-3 bg-blue-100 border-b border-blue-300 rounded-t shadow-md"
->
-    <h2 class="text-lg font-semibold text-blue-900">Contact Us</h2>
-    <button mat-icon-button (click)="onCancel()" aria-label="Close dialog" class="hover:bg-blue-200 rounded-full">
-        <mat-icon class="text-blue-900">close</mat-icon>
-    </button>
+<div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
+  <h2 class="flex items-center gap-2 font-display text-lg font-bold text-white">
+    <span class="material-icons-round text-brand-400">mail</span>Contact Us
+  </h2>
+  <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
+    <mat-icon class="text-zinc-400">close</mat-icon>
+  </button>
 </div>
 
-<!-- Contact Form -->
-<mat-dialog-content class="px-6 py-8 bg-gray-700 text-white rounded-b shadow-lg">
-    <p class="mb-4 text-sm">
-        Feel free to reach out to me through the following platforms:
-    </p>
-    <a 
-        href="mailto:mayureshpatrikar24.com" 
-        class="block mb-4 text-blue-300 hover:text-blue-400 underline"
-        matTooltip="Click to send an email"
-        matTooltipPosition="above"
+<mat-dialog-content class="!px-6 !py-6">
+  <p class="mb-5 text-sm text-zinc-400">Feel free to reach out to me through the following platforms:</p>
+
+  <div class="grid gap-3 sm:grid-cols-2">
+    <a
+      href="mailto:mayureshpatrikar24@gmail.com"
+      class="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.03] p-4 transition hover:border-brand-500/40 hover:bg-white/[.06]"
+      matTooltip="Click to send an email"
+      matTooltipPosition="above"
     >
-        Contact me via Email
+      <span class="grid h-10 w-10 place-items-center rounded-xl bg-brand-500/15 text-brand-400">
+        <i class="fa-solid fa-envelope"></i>
+      </span>
+      <span>
+        <span class="block text-sm font-semibold text-white">Email</span>
+        <span class="block text-xs text-zinc-500 group-hover:text-zinc-400">Send me a message</span>
+      </span>
     </a>
-    <div class="linkedin-message">
-        <a 
-            href="https://www.linkedin.com/in/mayureshpatrikar/" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            class="text-blue-300 hover:text-blue-400 underline"
-            matTooltip="Click to connect on LinkedIn"
-            matTooltipPosition="below"
-        >
-            Connect with me on LinkedIn
-        </a>
-    </div>
+
+    <a
+      href="https://www.linkedin.com/in/mayureshpatrikar/"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[.03] p-4 transition hover:border-sky-500/40 hover:bg-white/[.06]"
+      matTooltip="Click to connect on LinkedIn"
+      matTooltipPosition="below"
+    >
+      <span class="grid h-10 w-10 place-items-center rounded-xl bg-sky-500/15 text-sky-400">
+        <i class="fa-brands fa-linkedin-in"></i>
+      </span>
+      <span>
+        <span class="block text-sm font-semibold text-white">LinkedIn</span>
+        <span class="block text-xs text-zinc-500 group-hover:text-zinc-400">Connect with me</span>
+      </span>
+    </a>
+  </div>
 </mat-dialog-content>

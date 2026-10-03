@@ -1,58 +1,83 @@
-<div
-    class="flex items-center justify-between px-4 py-3 bg-blue-50 border-b border-blue-200 rounded-t"
->
-    <h2 class="text-lg font-semibold text-blue-800">About</h2>
-    <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
-        <mat-icon class="text-blue-800">close</mat-icon>
-    </button>
+<div class="flex items-center justify-between border-b border-white/10 px-6 py-4">
+  <h2 class="flex items-center gap-2 font-display text-lg font-bold text-white">
+    <span class="material-icons-round text-brand-400">shield</span>Privacy Policy
+  </h2>
+  <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
+    <mat-icon class="text-zinc-400">close</mat-icon>
+  </button>
 </div>
 
-<!-- Message Body -->
-<mat-dialog-content class="px-4 py-6 text-gray-700 bg-slate-500 text-center ">
-    <p class="text-lg"> </p>
+<mat-dialog-content class="!px-6 !py-6">
+  <div class="space-y-5 text-sm leading-relaxed text-zinc-300">
     <p>
-        Welcome to our IMDb clone website. Your privacy is important to us, and this policy explains how we collect, use, and protect your information.
+      Welcome to our IMDb clone website. Your privacy is important to us, and this policy explains how we collect,
+      use, and protect your information.
     </p>
-    <h2 class="text-lg font-semibold text-gray-900">Information We Collect</h2>
-    <p>
-        We may collect personal information such as your name, email address, and any other details you provide when registering or interacting with our website.
-    </p>
-    <h2 class="text-lg font-semibold text-gray-900">How We Use Your Information</h2>
-    <p>
-        Your information is used to improve your experience, provide personalized content, and ensure the functionality of our website.
-    </p>
-    <h2 class="text-lg font-semibold text-gray-900">Data Protection</h2>
- <br>
-    <h2 class="text-lg font-semibold font-sans">Open Source Software Used</h2>
-    <table class="table-auto border-separate border border-s-emerald-200 w-full text-left mt-4">
-        <thead>
+
+    <section>
+      <h3 class="mb-1 font-semibold text-white">Information We Collect</h3>
+      <p>
+        We may collect personal information such as your name, email address, and any other details you provide
+        when registering or interacting with our website.
+      </p>
+    </section>
+
+    <section>
+      <h3 class="mb-1 font-semibold text-white">How We Use Your Information</h3>
+      <p>
+        Your information is used to improve your experience, provide personalized content, and ensure the
+        functionality of our website.
+      </p>
+    </section>
+
+    <section>
+      <h3 class="mb-1 font-semibold text-white">Data Protection</h3>
+      <p>
+        Your favorites and recently viewed titles are stored only in your own browser (local and session storage)
+        and are never sent to our servers.
+      </p>
+    </section>
+
+    <section>
+      <h3 class="mb-2 font-semibold text-white">Open Source Software Used</h3>
+      <div class="overflow-hidden rounded-xl border border-white/10">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-white/5 text-xs uppercase tracking-wider text-zinc-400">
             <tr>
-                <th class="border border-gray-300 px-4 py-2 ">Software</th>
-                <th class="border border-gray-300 px-4 py-2 ">Version</th>
-                <th class="border border-gray-300 px-4 py-2 ">License</th>
+              <th class="px-4 py-2.5 font-semibold">Software</th>
+              <th class="px-4 py-2.5 font-semibold">Version</th>
+              <th class="px-4 py-2.5 font-semibold">License</th>
             </tr>
-        </thead>
-        <tbody>
+          </thead>
+          <tbody class="divide-y divide-white/5">
             <tr>
-                <td class="border border-gray-300 px-4 py-2">Angular</td>
-                <td class="border border-gray-300 px-4 py-2">18.2.13</td>
-                <td class="border border-gray-300 px-4 py-2">MIT</td>
-            </tr>
-            <tr>
-                <td class="border border-gray-300 px-4 py-2">Tailwind CSS</td>
-                <td class="border border-gray-300 px-4 py-2">3.2.4</td>
-                <td class="border border-gray-300 px-4 py-2">MIT</td>
+              <td class="px-4 py-2.5">Angular</td>
+              <td class="px-4 py-2.5">18</td>
+              <td class="px-4 py-2.5">MIT</td>
             </tr>
             <tr>
-                <td class="border border-gray-300 px-4 py-2">Material Angular</td>
-                <td class="border border-gray-300 px-4 py-2">18.2.13</td>
-                <td class="border border-gray-300 px-4 py-2">MIT</td>
+              <td class="px-4 py-2.5">Tailwind CSS</td>
+              <td class="px-4 py-2.5">3.4</td>
+              <td class="px-4 py-2.5">MIT</td>
             </tr>
-        </tbody>
-    </table>
-    <h2 class="text-lg font-semibold text-gray-900">Contact Us</h2>
-    <p>
-        If you have any questions about this privacy policy, please contact us at 
-        <a href="mailto:support@imdbclone.com" class="text-blue-600 underline">supportimdbclone.com</a>.
-    </p>
+            <tr>
+              <td class="px-4 py-2.5">Angular Material</td>
+              <td class="px-4 py-2.5">18</td>
+              <td class="px-4 py-2.5">MIT</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h3 class="mb-1 font-semibold text-white">Contact Us</h3>
+      <p>
+        If you have any questions about this privacy policy, please contact us at
+        <a href="mailto:support@imdbclone.com" class="text-brand-400 underline-offset-2 hover:underline"
+          >support&#64;imdbclone.com</a
+        >.
+      </p>
+    </section>
+  </div>
 </mat-dialog-content>

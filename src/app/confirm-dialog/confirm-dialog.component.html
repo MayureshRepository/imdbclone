@@ -1,29 +1,14 @@
-<!-- Header with Subtle Blue Background and Close Icon -->
-<div
-  class="flex items-center justify-between px-4 py-3 bg-blue-50 border-b border-blue-200 rounded-t"
->
-  <h2 class="text-lg font-semibold text-blue-800">Confirmation</h2>
-  <button mat-icon-button (click)="onCancel()" aria-label="Close dialog">
-    <mat-icon class="text-blue-800">close</mat-icon>
-  </button>
+<div class="px-6 pb-2 pt-6 text-center">
+  <div class="mx-auto mb-4 grid h-14 w-14 place-items-center rounded-2xl bg-red-500/10 ring-1 ring-red-500/25">
+    <span class="material-icons-round text-3xl text-red-400">delete_forever</span>
+  </div>
+  <h2 class="font-display text-lg font-bold text-white">{{ data.title || 'Are you sure?' }}</h2>
+  <p class="mt-2 text-sm text-zinc-400">{{ data.message }}</p>
 </div>
 
-<!-- Message Body -->
-<mat-dialog-content class="px-4 py-6 text-gray-700 text-center">
-  <p class="text-lg">{{ data.message }}</p>
-</mat-dialog-content>
-
-<!-- Footer Buttons -->
-<mat-dialog-actions
-  align="end"
-  class="px-4 py-3 space-x-2 border-t border-gray-200"
->
-  <button
-    mat-button
-    class="text-gray-600 hover:text-black"
-    (click)="onCancel()"
-  >
-    Cancel
+<div class="flex justify-end gap-2 px-6 pb-6 pt-4">
+  <button type="button" class="btn-ghost flex-1" (click)="onCancel()">Cancel</button>
+  <button type="button" class="btn flex-1 bg-red-500 text-snow hover:bg-red-400" (click)="onConfirm()">
+    Delete all
   </button>
-  <button mat-raised-button color="warn" (click)="onConfirm()">OK</button>
-</mat-dialog-actions>
+</div>

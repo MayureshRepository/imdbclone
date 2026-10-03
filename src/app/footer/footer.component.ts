@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { PrivacypolicyComponent } from './privacypolicy/privacypolicy.component';
@@ -13,32 +13,25 @@ export class FooterComponent {
 
   dialog= inject(MatDialog);
 
-  openAbout() {
-    this.dialog.open(AboutComponent, {
+  private dialogConfig(title: string): MatDialogConfig {
+    return {
       width: '600px',
-      height: '600px',
-      data: { title: 'About Us' }
-    });
+      maxWidth: 'calc(100vw - 32px)',
+      panelClass: 'modern-dialog',
+      autoFocus: false,
+      data: { title }
+    };
   }
 
+  openAbout() {
+    this.dialog.open(AboutComponent, this.dialogConfig('About Us'));
+  }
 
   openContact() {
-    this.dialog.open(ContactComponent, {
-      width: '600px',
-      height: '500px',
-      data: { title: 'Contact Us' }
-    });
+    this.dialog.open(ContactComponent, this.dialogConfig('Contact Us'));
   }
 
   openPrivacyPolicy() {
-    this.dialog.open(PrivacypolicyComponent, {
-      width: '600px',
-      height: '600px',
-      data: { title: 'Privacy Policy' }
-    }); 
-
+    this.dialog.open(PrivacypolicyComponent, this.dialogConfig('Privacy Policy'));
   }
-
-
-
 }

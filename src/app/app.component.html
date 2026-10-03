@@ -1,5 +1,7 @@
-<app-header> </app-header>
- <div class="min-h-[90vh]">
+<div class="flex min-h-screen flex-col">
+  <app-header></app-header>
+  <main class="flex-1">
     <router-outlet></router-outlet>
- </div>
-<app-footer> </app-footer>
+  </main>
+  <app-footer></app-footer>
+</div>

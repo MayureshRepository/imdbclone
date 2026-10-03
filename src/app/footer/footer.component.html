@@ -1,10 +1,13 @@
-<footer class="bg-gray-900 text-white text-center py-5 roboto">
-    <div class="container mx-auto">
-        <p>&copy; 2026 IMDb Clone. All rights reserved.</p>
-        <p class="mt-2">
-            <span (click)="openAbout()" class="text-yellow-500 hover:cursor-pointer mx-2">About</span>
-            <span (click)="openContact()"   class="text-yellow-500 hover:cursor-pointer mx-2">Contact</span>
-            <span (click)="openPrivacyPolicy()"  class="text-yellow-500 hover:cursor-pointer mx-2">Privacy Policy</span>
-        </p>
+<footer class="mt-16 border-t border-white/5 bg-ink-900/60">
+  <div class="page flex flex-col items-center justify-between gap-4 py-8 text-sm sm:flex-row">
+    <div class="flex items-center gap-3">
+      <span class="rounded bg-brand-500 px-1.5 py-0.5 font-display text-sm font-extrabold text-onbrand">AMDb</span>
+      <p class="text-zinc-500">&copy; 2026 IMDb Clone. All rights reserved.</p>
     </div>
+    <nav class="flex items-center gap-1">
+      <button type="button" (click)="openAbout()" class="rounded-full px-3 py-1.5 text-zinc-400 transition hover:bg-white/5 hover:text-brand-400">About</button>
+      <button type="button" (click)="openContact()" class="rounded-full px-3 py-1.5 text-zinc-400 transition hover:bg-white/5 hover:text-brand-400">Contact</button>
+      <button type="button" (click)="openPrivacyPolicy()" class="rounded-full px-3 py-1.5 text-zinc-400 transition hover:bg-white/5 hover:text-brand-400">Privacy Policy</button>
+    </nav>
+  </div>
 </footer>

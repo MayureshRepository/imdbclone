@@ -27,25 +27,35 @@ export class DetailsComponent {
   movieName:any;
 
   constructor(private favoriteService: FavoriteService) {
+    // Re-run on every param change so navigating between titles
+    // (e.g. via header search while on a details page) refreshes the view.
     this.activatedRoute.paramMap.subscribe((params) => {
       const idParam = params.get('id');
-      if (idParam !== null) {
-        this.ids = idParam;
+      if (idParam === null) {
+        return;
       }
+      this.ids = idParam;
+
+      const storedMovies = sessionStorage.getItem('recentlyViewedMovies');
+      const recentlyAddedMovies = storedMovies ? JSON.parse(storedMovies) : [];
+
+      if (!recentlyAddedMovies.includes(this.ids)) {
+        recentlyAddedMovies.push(this.ids);
+        sessionStorage.setItem(
+          'recentlyViewedMovies',
+          JSON.stringify(recentlyAddedMovies)
+        );
+      }
+      this.getDetails(this.ids);
+      window.scrollTo(0, 0);
     });
+  }
 
-    const storedMovies = sessionStorage.getItem('recentlyViewedMovies');
-    const recentlyAddedMovies = storedMovies ? JSON.parse(storedMovies) : [];
-
-    if (!recentlyAddedMovies.includes(this.ids)) {
-      recentlyAddedMovies.push(this.ids);
-      sessionStorage.setItem(
-        'recentlyViewedMovies',
-        JSON.stringify(recentlyAddedMovies)
-      );
-    }
-    this.getDetails(this.ids);
-    window.scrollTo(0, 0);
+  get genres(): string[] {
+    const genre = this.tvshow?.Genre;
+    return genre && genre !== 'N/A'
+      ? genre.split(',').map((g: string) => g.trim())
+      : [];
   }
 
   getDetails(id: string) {
@@ -57,6 +67,7 @@ export class DetailsComponent {
       },
       error: (error: any) => {
         console.error('Error fetching data:', error);
+        this.isLoading = false;
       },
       complete: () => {
         this.isLoading = false;

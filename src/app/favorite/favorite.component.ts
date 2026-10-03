@@ -80,8 +80,9 @@ export class FavoriteComponent implements OnInit {
   deleteAll() {
     this.dialog
       .open(ConfirmDialogComponent, {
-        width: '500px',
-        height: '300px',
+        width: '420px',
+        maxWidth: 'calc(100vw - 32px)',
+        panelClass: 'modern-dialog',
         data: {
           title: 'Confirm Deletion',
           message: 'Are you sure you want to delete all favorites?',

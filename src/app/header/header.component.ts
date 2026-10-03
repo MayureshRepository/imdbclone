@@ -9,6 +9,7 @@ import {
 import { SearchService } from '../service/search.service';
 import { Router } from '@angular/router';
 import { FavoriteService } from '../service/favorite.service';
+import { ThemeService } from '../service/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
     private favService: FavoriteService
   ) {}
   router = inject(Router);
+  theme = inject(ThemeService);
   dataFromSearch: any[] = [];
   private debounceTimer: ReturnType<typeof setTimeout> | null = null;
   isDropDownOpen!: boolean;
@@ -34,10 +36,13 @@ export class HeaderComponent implements OnInit {
   }
 
   onSearch() {
+    if (!this.searchText.trim()) {
+      return;
+    }
+    this.isLoading = false;
     this.searchService.getTvShowData(this.searchText).subscribe({
       next: (data: any) => {
-        //
-        this.dataFromSearch = data.Search;
+        this.dataFromSearch = data.Search || [];
 
         this.isDropDownOpen = this.isBoolean(data.Response);
       },
@@ -64,16 +69,23 @@ export class HeaderComponent implements OnInit {
       clearTimeout(this.debounceTimer);
     }
 
+    if (!value || !value.trim()) {
+      this.isDropDownOpen = false;
+      this.dataFromSearch = [];
+      return;
+    }
+
     this.debounceTimer = setTimeout(() => {
       this.isDropDownOpen = true;
       this.isLoading = true;
       this.searchService.getTvShowData(this.searchText).subscribe({
         next: (data: any) => {
-          this.dataFromSearch = data.Search;
+          this.dataFromSearch = data.Search || [];
           this.isLoading = false;
         },
         error: (error: any) => {
           console.error('Error fetching data:', error);
+          this.isLoading = false;
         },
       });
     }, 300);
@@ -92,6 +104,8 @@ export class HeaderComponent implements OnInit {
   }
 
   onSelect(imdbIDformData: any) {
+    this.isDropDownOpen = false;
+    this.searchText = '';
     this.router.navigate(['/details', imdbIDformData.imdbID]);
   }
 }

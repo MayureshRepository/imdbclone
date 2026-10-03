@@ -22,6 +22,7 @@ export class MainComponent implements OnInit {
   dialog = inject(MatDialog);
   readonly snackBar = inject(MatSnackBar);
   isSelectedMovieInFavorites: boolean = false;
+  skeletons = Array(12);
 
   constructor(
     private searchService: SearchService,
