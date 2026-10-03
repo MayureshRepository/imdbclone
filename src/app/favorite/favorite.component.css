@@ -6,7 +6,7 @@
     100% { transform: rotate(0deg); }
   }
   
-  .shake-on-hover:hover .fa-trash {
+  .shake-on-hover:hover .material-icons-round {
     animation: shake 0.4s;
   }
   

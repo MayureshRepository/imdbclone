@@ -22,6 +22,7 @@ import { AboutComponent } from './footer/about/about.component';
 import { ContactComponent } from './footer/contact/contact.component';
 import { PrivacypolicyComponent } from './footer/privacypolicy/privacypolicy.component';
 import { SpotlightDirective } from './shared/spotlight.directive';
+import { RevealDirective } from './shared/reveal.directive';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SpotlightDirective } from './shared/spotlight.directive';
     AboutComponent,
     ContactComponent,
     PrivacypolicyComponent,
-    SpotlightDirective
+    SpotlightDirective,
+    RevealDirective
   ],
   imports: [
     BrowserModule,

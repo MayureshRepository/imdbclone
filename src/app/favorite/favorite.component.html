@@ -15,7 +15,7 @@
 
     @if (movieData.length > 0) {
     <button type="button" class="btn-danger shake-on-hover" (click)="deleteAll()">
-      <i class="fa-solid fa-trash"></i>
+      <span class="material-icons-round text-[18px]">delete</span>
       <span>Clear all</span>
     </button>
     }
@@ -23,7 +23,8 @@
 
   @if (movieData.length > 0) {
   <div class="poster-grid">
-    @for (movie of movieData; track movie.imdbID) {
+    @for (movie of movieData; track movie.imdbID; let i = $index) {
+    <div [appReveal]="(i % 6) * 70">
     <article class="poster-card group" (click)="onSelect(movie)">
       <img
         class="poster"
@@ -31,6 +32,7 @@
         (error)="onImageError($event)"
         [alt]="movie.Title + ' poster'"
         loading="lazy"
+      decoding="async"
       />
       <div class="overlay"></div>
 
@@ -57,14 +59,15 @@
         </div>
       </div>
     </article>
+    </div>
     }
   </div>
   } @else {
   <div
-    class="mx-auto flex max-w-md flex-col items-center rounded-3xl border border-dashed border-white/10 bg-white/[.02] px-6 py-16 text-center"
+    class="mx-auto flex max-w-md animate-fade-up flex-col items-center rounded-3xl border border-dashed border-white/10 bg-white/[.02] px-6 py-16 text-center"
   >
     <div class="mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-rose-500/10 ring-1 ring-rose-500/20">
-      <span class="material-icons-round text-3xl text-rose-500">favorite_border</span>
+      <span class="material-icons-round animate-pulse-soft text-3xl text-rose-500">favorite_border</span>
     </div>
     <h2 class="font-display text-xl font-bold">No favorites yet</h2>
     <p class="mt-2 text-sm text-zinc-400">

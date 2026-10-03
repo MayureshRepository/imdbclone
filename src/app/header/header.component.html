@@ -102,11 +102,14 @@
     >
       <span class="material-icons-round text-[20px] text-rose-500">favorite</span>
       <span class="hidden sm:inline">Favorites</span>
+      <!-- Re-created when the count changes, so the bump animation replays -->
+      @for (count of [favoritesCount?.length || 0]; track count) {
       <span
-        class="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-brand-500 px-1 text-[11px] font-bold text-onbrand ring-2 ring-ink-950"
+        class="absolute -right-1.5 -top-1.5 grid h-5 min-w-5 animate-bump place-items-center rounded-full bg-brand-500 px-1 text-[11px] font-bold text-onbrand ring-2 ring-ink-950"
       >
-        {{ favoritesCount?.length || 0 }}
+        {{ count }}
       </span>
+      }
     </a>
 
     <!-- Theme toggle -->
@@ -118,12 +121,14 @@
       [attr.aria-label]="theme.isDark ? 'Switch to light mode' : 'Switch to dark mode'"
       [attr.aria-pressed]="!theme.isDark"
     >
+      @for (t of [theme.theme]; track t) {
       <span
-        class="material-icons-round text-[20px] transition duration-300 group-hover:rotate-12"
+        class="material-icons-round animate-spin-in text-[20px] transition duration-300 group-hover:rotate-12"
         [class.text-brand-400]="theme.isDark"
-        [class.text-indigo-500]="!theme.isDark"
+        [class.text-accent-400]="!theme.isDark"
         >{{ theme.isDark ? 'light_mode' : 'dark_mode' }}</span
       >
+      }
     </button>
   </div>
 </header>

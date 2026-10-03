@@ -45,6 +45,8 @@ export class MainComponent implements OnInit {
   isSelectedMovieInFavorites: boolean = false;
   skeletons = Array(12);
   favoritesCount = 0;
+  /** In-memory copy of favorite IDs, kept in sync by FavoriteService.favorites$. */
+  private favoriteIds = new Set<string>();
   quickPicks = [
     { imdbID: 'tt1375666', Title: 'Inception' },
     { imdbID: 'tt0816692', Title: 'Interstellar' },
@@ -80,6 +82,7 @@ export class MainComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((favorites: any[]) => {
         this.favoritesCount = favorites.length;
+        this.favoriteIds = new Set(favorites);
       });
   }
 
@@ -240,7 +243,9 @@ export class MainComponent implements OnInit {
     handlePosterError(event);
   }
 
+  // Called from the template for every card on every change detection,
+  // so it must be a cheap lookup rather than a localStorage read + JSON.parse.
   checkIfMovieIsInFavorites(ids: string): boolean {
-    return this.isMovieAlreadyInFavorites(ids);
+    return this.favoriteIds.has(ids);
   }
 }

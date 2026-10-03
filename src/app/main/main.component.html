@@ -7,11 +7,11 @@
       class="bento-tile flex flex-col justify-between gap-8 p-7 sm:col-span-2 lg:row-span-2 lg:p-10"
     >
       <div
-        class="absolute -right-24 -top-24 -z-10 h-72 w-72 rounded-full bg-accent-500/25 blur-3xl"
+        class="absolute -right-24 -top-24 -z-10 h-72 w-72 animate-float rounded-full bg-accent-500/25 blur-3xl"
         aria-hidden="true"
       ></div>
       <div
-        class="absolute -bottom-28 -left-16 -z-10 h-64 w-64 rounded-full bg-brand-500/15 blur-3xl"
+        class="absolute -bottom-28 -left-16 -z-10 h-64 w-64 animate-float-slow rounded-full bg-brand-500/15 blur-3xl"
         aria-hidden="true"
       ></div>
 
@@ -61,7 +61,7 @@
       />
       <div class="media-scrim -z-10"></div>
       <div class="on-media p-6">
-        <span class="chip mb-3 border-brand-500/40 bg-black/50 text-brand-400 backdrop-blur">
+        <span class="chip mb-3 border-brand-500/40 bg-black/60 text-brand-400">
           <span class="material-icons-round text-[14px]">emoji_events</span>#1 on IMDb
         </span>
         <h2 class="font-display text-2xl font-bold leading-tight text-white">{{ featured.Title }}</h2>
@@ -127,7 +127,7 @@
     <div appSpotlight class="bento-tile flex flex-col justify-between gap-5 sm:col-span-2 lg:col-span-4 lg:flex-row lg:items-center">
       <div>
         <p class="eyebrow">Quick picks</p>
-        <h3 class="mt-2 font-display text-xl font-bold text-white">Jump straight into a classic</h3>
+        <h3 class="mt-2 w-fit font-display text-xl font-bold text-gradient sm:text-2xl">Jump straight into a classic</h3>
       </div>
       <div class="flex flex-wrap gap-2">
         @for (pick of quickPicks; track pick.imdbID) {
@@ -148,13 +148,15 @@
   <!-- Recently viewed -->
   @if (cachedMovies && cachedMovies.length > 0) {
   <section>
-    <div class="mb-5 flex items-end justify-between">
+    <div appReveal class="mb-5 flex items-end justify-between">
       <h2 class="section-title">Recently Viewed</h2>
       <span class="text-xs text-zinc-500">{{ cachedMovies.length }} titles</span>
     </div>
     <div class="poster-grid">
-      @for (data of cachedMovies; track data.imdbID) {
-      <ng-container *ngTemplateOutlet="posterCard; context: { $implicit: data }"></ng-container>
+      @for (data of cachedMovies; track data.imdbID; let i = $index) {
+      <div [appReveal]="(i % 6) * 70">
+        <ng-container *ngTemplateOutlet="posterCard; context: { $implicit: data }"></ng-container>
+      </div>
       }
     </div>
   </section>
@@ -162,7 +164,7 @@
 
   <!-- Top rated on IMDb -->
   <section id="trending" class="scroll-mt-24">
-    <div class="mb-5 flex items-end justify-between">
+    <div appReveal class="mb-5 flex items-end justify-between">
       <div>
         <h2 class="section-title">Top Rated on IMDb</h2>
         <p class="mt-1 pl-4 text-sm text-zinc-500">The highest-rated titles of all time, ranked by IMDb score.</p>
@@ -182,7 +184,9 @@
     } @else if (trendingMovies && trendingMovies.length > 0) {
     <div class="poster-grid">
       @for (data of trendingMovies; track data.imdbID; let i = $index) {
-      <ng-container *ngTemplateOutlet="posterCard; context: { $implicit: data, rank: i + 1 }"></ng-container>
+      <div [appReveal]="(i % 6) * 70">
+        <ng-container *ngTemplateOutlet="posterCard; context: { $implicit: data, rank: i + 1 }"></ng-container>
+      </div>
       }
     </div>
     } @else {
@@ -202,6 +206,7 @@
       (error)="onImageError($event)"
       [alt]="data.Title + ' poster'"
       loading="lazy"
+      decoding="async"
     />
     <div class="overlay"></div>
 

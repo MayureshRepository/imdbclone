@@ -19,7 +19,7 @@ AMDb is a fast, responsive movie & TV show explorer built with **Angular 18**, *
 | Framework  | Angular 18 (NgModule-based, new control flow)  |
 | Styling    | Tailwind CSS 3.4 + custom design tokens        |
 | Components | Angular Material 18 (dialogs, snackbar, tooltips) |
-| Icons      | Material Icons Round, Font Awesome 6           |
+| Icons      | Material Icons Round                           |
 | Data       | [OMDb API](https://www.omdbapi.com/)           |
 | Tests      | Karma + Jasmine                                |
 
@@ -151,6 +151,17 @@ Reusable classes are defined in `src/styles.css` under `@layer components`:
 - `bento`, `bento-tile`, `bento-tile-link`: Bento grid and glass tiles (add `appSpotlight` for the cursor glow)
 - `glass`, `text-gradient`, `btn-accent`, `eyebrow`, `icon-badge`: surfaces, headline gradient and accents
 - `chip`, `section-title`, `skeleton`: small UI primitives
+
+**Palette ("Midnight Premiere"):** each color has one job, which keeps the UI calm and consistent.
+
+| Role | Color | Used for |
+| ---- | ----- | -------- |
+| Brand | Gold `#f5c518` | Logo, primary buttons, ratings, rank badges, headline shimmer |
+| Accent | Indigo `#6d5efc` | Secondary buttons, chips, focus rings, hover glows |
+| Favorites | Rose `#f43f5e` | Hearts and the favorites burst only |
+| Neutrals | Cool slate | Backgrounds, cards and text, tinted toward the indigo background |
+
+All text colors meet WCAG AA contrast (4.5:1) in both themes.
 
 Colors are defined in `tailwind.config.js` (`ink-*` for surfaces, `brand-*` for the IMDb-style yellow). The theme-aware tokens (`ink-*`, `zinc-*`, `white`, `brand-300/400`) read CSS variables declared in `src/styles.css`: `:root` holds the dark palette (the default) and `html.light` overrides it. `ThemeService` (`src/app/service/theme.service.ts`) toggles the `light` class. Use `onbrand` or `snow` for text that must stay the same color in both themes, such as text on yellow or red buttons.
 

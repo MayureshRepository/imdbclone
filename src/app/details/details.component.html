@@ -23,13 +23,13 @@
       </button>
 
       @if (!isSelectedMovieInFavorites) {
-      <button type="button" class="btn-primary" (click)="addToFavorites(ids)">
+      <button type="button" class="btn-primary" data-burst (click)="addToFavorites(ids)">
         <span class="material-icons-round text-[18px]">favorite_border</span>
         <span class="hidden sm:inline">Add to Favorites</span>
       </button>
       } @else {
       <button type="button" class="btn-ghost !border-rose-500/40 !text-rose-300" (click)="removeFromFavorites(ids)">
-        <span class="material-icons-round text-[18px] text-rose-500">favorite</span>
+        <span class="material-icons-round animate-heart-pop text-[18px] text-rose-500">favorite</span>
         <span class="hidden sm:inline">Remove from Favorites</span>
       </button>
       }

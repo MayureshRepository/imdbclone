@@ -5,7 +5,7 @@
     <title>AMDb — Discover Movies &amp; TV Shows</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#07080c" />
+    <meta name="theme-color" content="#090b16" />
     <meta
       name="description"
       content="AMDb is a fast, modern IMDb-style app to search movies and TV shows and keep a list of favorites."
@@ -15,7 +15,7 @@
       try {
         if (localStorage.getItem('theme') === 'light') {
           document.documentElement.classList.add('light');
-          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f8f9fb');
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f4f5fb');
         }
       } catch (e) {}
     </script>
@@ -29,13 +29,6 @@
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons+Round|Material+Icons"
       rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
     />
   </head>
   <body>

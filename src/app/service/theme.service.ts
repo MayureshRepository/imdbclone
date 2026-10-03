@@ -4,8 +4,8 @@ export type Theme = 'dark' | 'light';
 
 const STORAGE_KEY = 'theme';
 const THEME_COLORS: Record<Theme, string> = {
-  dark: '#07080c',
-  light: '#f8f9fb',
+  dark: '#090b16',
+  light: '#f4f5fb',
 };
 
 /**
@@ -28,7 +28,23 @@ export class ThemeService {
   }
 
   toggle() {
-    this.setTheme(this.isDark ? 'light' : 'dark');
+    const next: Theme = this.isDark ? 'light' : 'dark';
+    const doc = document as Document & {
+      startViewTransition?: (cb: () => void) => { finished: Promise<void> };
+    };
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
+    if (!doc.startViewTransition || reduceMotion) {
+      this.setTheme(next);
+      return;
+    }
+
+    // Cross-fade the whole page between themes instead of snapping colors.
+    const root = document.documentElement;
+    root.classList.add('theme-switching');
+    doc
+      .startViewTransition(() => this.setTheme(next))
+      .finished.finally(() => root.classList.remove('theme-switching'));
   }
 
   setTheme(theme: Theme) {

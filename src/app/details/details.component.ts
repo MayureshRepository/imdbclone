@@ -52,17 +52,13 @@ export class DetailsComponent {
     });
   }
 
-  get actors(): string[] {
-    const actors = this.tvshow?.Actors;
-    return actors && actors !== 'N/A'
-      ? actors.split(',').map((a: string) => a.trim())
-      : [];
-  }
+  // Derived once per load (not getters) so change detection doesn't re-split strings.
+  actors: string[] = [];
+  genres: string[] = [];
 
-  get genres(): string[] {
-    const genre = this.tvshow?.Genre;
-    return genre && genre !== 'N/A'
-      ? genre.split(',').map((g: string) => g.trim())
+  private splitList(value: string | undefined): string[] {
+    return value && value !== 'N/A'
+      ? value.split(',').map((v) => v.trim())
       : [];
   }
 
@@ -71,6 +67,8 @@ export class DetailsComponent {
     this.movieSearchService.getMovieData(id).subscribe({
       next: (data: any) => {
         this.tvshow = data;
+        this.actors = this.splitList(data.Actors);
+        this.genres = this.splitList(data.Genre);
         this.isSelectedMovieInFavorites = this.isMovieAlreadyInFavorites(id);
       },
       error: (error: any) => {
